@@ -24,7 +24,7 @@ header {
 	height: 30px;
 	z-index: 100;
 
-	background-color: #282b2c;
+	/*background-color: #282b2c;*/
 	padding: 5px 10px;
 	margin: 3px 0px;
 	opacity: 0.8;
@@ -404,27 +404,38 @@ header button:hover{
 	transition: 0.4s;
 
 }
+
+
+
+
+
 .viewPano{
 	box-sizing: border-box;
-	width: 98%;/*760px;*/
-	/*height: 550px;*/
+	height: 100%;
 	position: fixed;
-	left: 1%;/*50%;*/
-	/*margin-left: -375px;*/
-	top: 1%;/*50%;*/
-	/*margin-top: -275px;*/
+	left: 0%;
+	top: 0%;
 	pointer-events: none;
 
-	border-radius: 6px;
+	/*border-radius: 6px;*/
 	background-color:  #ffffff;
 
 	z-index: 102;
 	opacity: 0;
-	transition: 0.4s;
+
 
 	overflow: scroll;
-	position:absolute; /*for scrolling*/
+	position:absolute;
 
+}
+
+
+.viewPano img {
+	height: 100%;
+	margin: 0 auto;
+	cursor: move;
+	overflow: hidden;
+	background-repeat: repeat-x;
 }
 
 .info.visible .viewInfo{

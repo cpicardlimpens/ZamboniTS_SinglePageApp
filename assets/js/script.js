@@ -543,7 +543,7 @@ function attachSecretMessage(marker, secretMessage) {
 
 
 
-
+/*
 function pinSymbol(color) {
     return {
         path: 'M 0,0 C -2,-20 -10,-22 -10,-30 A 10,10 0 1,1 10,-30 C 10,-22 2,-20 0,0 z',
@@ -554,6 +554,7 @@ function pinSymbol(color) {
         scale: 0.5
     };
 }
+*/
 
 
 $(function () {
@@ -575,7 +576,7 @@ $(function () {
 	//	Event handlers for frontend navigation
 
 	//	Checkbox filtering
-
+    /*
 	var checkboxes = $('.all-products input[type=checkbox]');
 
 	checkboxes.click(function () {
@@ -627,7 +628,7 @@ $(function () {
 		e.preventDefault();
 		window.location.hash = '#';
 	});
-
+    */
 
 	// Single product page buttons
 
@@ -671,7 +672,7 @@ $(function () {
 
 
 	// These are called on page load
-
+    /*
 	// Get data about our products from products.json.
 	$.getJSON( "products.json", function( data ) {
 
@@ -684,7 +685,7 @@ $(function () {
 		// Manually trigger a hashchange to start the app.
 		$(window).trigger('hashchange');
 	});
-
+    */
 
 	// An event handler with calls the render function on every hashchange.
 	// The render function will show the appropriate content of out page.
@@ -711,11 +712,11 @@ $(function () {
 
 				// Clear the filters object, uncheck all checkboxes, show all the products
 				filters = {};
-				checkboxes.prop('checked',false);
+				/*checkboxes.prop('checked',false);*/
 
 				renderProductsPage(products);
 			},
-
+            /*
 			// Single Products page.
 			'#product': function() {
 
@@ -743,6 +744,7 @@ $(function () {
 
 				renderFilterResults(filters, products);
 			},
+            */
 
 			// Ccl
 			// Page info about ZamboniTS
@@ -798,7 +800,7 @@ $(function () {
 
 	// This function receives an object containing all the product we want to show.
 	function renderProductsPage(data){
-
+        /*
 		var page = $('.all-products'),
 			allProducts = $('.all-products .products-list > li');
 
@@ -820,7 +822,7 @@ $(function () {
 
 		// Show the page itself.
 		// (the render function hides all pages so we need to show the one we want).
-		page.addClass('visible');
+		page.addClass('visible');*/
 
 	}
 
@@ -852,7 +854,7 @@ $(function () {
 	// Find and render the filtered data results. Arguments are:
 	// filters - our global variable - the object with arrays about what we are searching for.
 	// products - an object with the full products list (from product.json).
-	function renderFilterResults(filters, products){
+	/*function renderFilterResults(filters, products){
 
 			// This array contains all the possible filter criteria.
 		var criteria = ['manufacturer','storage','os','camera'],
@@ -921,7 +923,7 @@ $(function () {
 		// As it's argument give the object with filtered products.
 		renderProductsPage(results);
 	}
-
+    */
 
 	// Shows the error page.
 	function renderErrorPage(){
@@ -967,9 +969,9 @@ $(function () {
 	// Pano Information
 	function renderPanoPage(){
 		var page = $('.pano'),
-			container = $('.viewPano'),
-			container1 = $('.viewPano .n1'),
-			container2 = $('.viewPano .n2')
+			container = $('.viewPano')
+			//container1 = $('.viewPano .n1'),
+			//container2 = $('.viewPano .n2')
 			;
 
 		container.find('h3').text("Tappa");
@@ -978,10 +980,11 @@ $(function () {
 
   		//container.find('audio').load(); //call this to just preload the audio without playing
   		//container.find('audio').play(); //call this to play the song right away
-		container1.find('img').attr('src', 'assets/images/casa-isolani-residenze-di-epoca-bologna-vista-camera-abbado-580.jpg');
-		container2.find('img').attr('src', 'assets/images/galaxy-alpha-large.jpg');
-		container.find('audio').attr('src', 'assets/sounds/Event2.wav');
-		container.find('p').text("Il progetto nasce nell’ambito delle recenti iniziative dedicate a via Zamboni, uno dei fulcri principali dell’identità e della vita bolognese, proponendo un percorso di riscoperta dei molteplici aspetti che la connotano attraverso l’utilizzo della multimedialità per offrire un’esperienza interattiva con la strada, caratterizzata dal coinvolgimento multisensoriale.");
+        container.find('img').attr('src', 'assets/images/casa-isolani-residenze-di-epoca-bologna-vista-camera-abbado-580.jpg');
+		//container1.find('img').attr('src', 'assets/images/casa-isolani-residenze-di-epoca-bologna-vista-camera-abbado-580.jpg');
+		//container2.find('img').attr('src', 'assets/images/galaxy-alpha-large.jpg');
+		//container.find('audio').attr('src', 'assets/sounds/Event2.wav');
+		//container.find('p').text("Il progetto nasce nell’ambito delle recenti iniziative dedicate a via Zamboni, uno dei fulcri principali dell’identità e della vita bolognese, proponendo un percorso di riscoperta dei molteplici aspetti che la connotano attraverso l’utilizzo della multimedialità per offrire un’esperienza interattiva con la strada, caratterizzata dal coinvolgimento multisensoriale.");
 
 		// Show the page.
 		page.addClass('visible');

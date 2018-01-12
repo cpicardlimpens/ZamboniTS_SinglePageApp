@@ -4,6 +4,8 @@
     <title>Zamboni Touch Street</title>
     <meta name="viewport" content="initial-scale=1.0">
     <meta charset="utf-8">
+    <!-- Bootstrap core CSS -->
+    <!--<link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">-->
 
 	<link href="http://fonts.googleapis.com/css?family=Open+Sans:400" rel="stylesheet">
     <link href="assets/css/styles.css" rel="stylesheet">
@@ -19,7 +21,7 @@
 		<h1><a href="../index.html">Zamboni Touch Street</a></h1>
 	</header>
 
-    <div class="main-content">
+    <!--<div class="main-content">-->
         <!-- info page -->
         <div class="info page">
 
@@ -39,15 +41,23 @@
         <!-- pano page -->
         <div class="pano page">
 
-            <div class="overlay"></div>
+            <!--<div class="overlay"></div>-->
+            <div id="modal_i">
+                <div class="modal fade" id="myModal" role="dialog">
+                </div>
+            </div>
 
-            <div class="viewPano">
-                <h3>panoramica</h3>
-                <!-- info in pano page -->
+
+            <div class="viewPano" style="background-image:url('');background-repeat:repeat-x; background-size: auto 100%; width:1000px">
+                <!--<h3>panoramica</h3>
+
                 <div class="info page">
         		          <button>i</button>
-                </div>
-                <div class="n1">
+                </div>-->
+
+                <!--<img src=""/>-->
+
+                <!--<div class="n1">
                     <img src=""/>
                 </div>
                 <div class="n2">
@@ -55,16 +65,20 @@
                 </div>
                 <img src=""/>
                 <audio controls><source src="" type="audio/wav"></audio>
-                <p></p>
+                <p></p>-->
 
                 <span class="close">x</span>
+                <!-- info modal container -->
+                <div style="position:fixed; left: 5px; bottom :10px">
+                    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" style="font-style: italic;">i</button>
+                </div>
             </div>
 
         </div>
 
 
 
-    </div>
+    <!--</div>-->
 
 
 
@@ -158,11 +172,12 @@
 	</div>-->
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="bootstrap/dist/js/bootstrap.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.min.js"></script>
-	<script src="assets/js/script.js"></script>
+	<script src="assets/js/architecture.js"></script> <!--script.js-->
     <!--<script src="assets/js/map.js"></script>-->
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCc_Nv8ldJqG-pC79H76TXUKZ5XdsOzRnI&callback=initMap"
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCc_Nv8ldJqG-pC79H76TXUKZ5XdsOzRnI&callback=start"
     async defer></script>
   </body>
 </html>
