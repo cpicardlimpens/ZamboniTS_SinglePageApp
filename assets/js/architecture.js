@@ -24,7 +24,7 @@ $(function start() {
 			var clicked = $(e.target);
 
 			// If the close button or the background are clicked go to the previous page.
-			if (clicked.hasClass('close') || clicked.hasClass('overlay')) {
+			if (clicked.hasClass('close-info') || clicked.hasClass('overlay')) {
 				// Change the url hash
                 window.location.hash = '';
 			}
@@ -127,7 +127,7 @@ $(function start() {
             generateStepsMarkers(feature);
         }
 
-        markers_list[current_count].setAnimation(google.maps.Animation.BOUNCE);
+        /*markers_list[current_count].setAnimation(google.maps.Animation.BOUNCE);*/
 
         // geoloc
         var infoWindow_ = new google.maps.InfoWindow({
@@ -222,16 +222,34 @@ $(function start() {
             map: map,
             animation: google.maps.Animation.DROP,
             position: new google.maps.LatLng(data.pos_lat,data.pos_lng), //f.position,
-            //icon: f.icon,//pinSymbol('red')
+            icon: { //icon color according to step type?
+                //url: 'assets/images/marker.svg',
+                //scaledSize: new google.maps.Size(32, 38),
+                path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
+                scale: 7,
+                fillColor: 'grey',
+                labelOrigin: new google.maps.Point(0, -2),
+                fillOpacity: 0.2,
+                strokeColor: 'black',
+                strokeWeight: 1,
+            },//f.icon,//pinSymbol('red')
             title: data.title,
             listing_id: data.listing_id,
-            label: data.label
+            label: {
+                text: data.label,
+                fontSize:'12px'
+            }
         });
         //console.log(marker.title + " // "+ marker.label + " // " + marker.listing_id);
         list_steps+=marker.listing_id;
         list_steps+="_";
         markers_list.push(marker);
-
+        google.maps.event.addListener(marker, 'mouseover', function() {
+            marker.setOptions({'opacity': 0.5})
+        });
+        google.maps.event.addListener(marker, 'mouseout', function() {
+            marker.setOptions({'opacity': 1.0})
+        });
         injectStepMarkersInMap(marker);
     }
 
@@ -665,18 +683,144 @@ $(function start() {
             infoPanoPage.addClass('visible');
     	});
 
+        var steps = list_steps.split('_');
+        var p; var n; var s;
+        for (var i=0; i< steps.length-1; i++) {
+            if(stepid==steps[i]){
+                s=i+1;
+                if(i==0) {
+                    p=" ";
+                    n=steps[i+1];
+                    //console.log("previous: "+ p + " / next: "+ n);
+                } else if(i==(steps.length-2)) {
+                    p=steps[i-1];
+                    n=" ";
+                    console.log("previous: "+ p + " / next: "+ n);
+                } else {
+                    p=steps[i-1];
+                    n=steps[i+1];
+                    //console.log("previous: "+ p + " / next: "+ n);
+                }
+
+            }
+        }
+        // FIXME : more compact??
+        var new_content1 = "";
+        if(p==" "){
+            new_content1 += '    '
+                        + '<a class="next" href="#step/'+n+'">'
+                        + ''+(s+1)+' >'
+                        + '</a>';
+        } else if(n==" "){
+            new_content1 += '<a class="previous" href="#step/'+p+'">'
+                        + '< '+(s-1)+''
+                        + '</a>';
+        } else {
+            new_content1 += '<a class="previous" href="#step/'+p+'">'
+                        + '< '+(s-1)+''
+                        + '</a>'
+                        + ' '
+                        + '<a class="next" href="#step/'+n+'">'
+                        + ''+(s+1)+' >'
+                        + '</a>';
+        }
+        $("#steps_nav" ).html(new_content1);
+
         $.getJSON( API_BASE_URL+"listings/"+stepid, function( data ) {
                 console.log("got listing details", data);
                 var interestPoints = data.acf.pint;
 
-                // load panorama title and image
-                /*container.find('h3').text(data.title.rendered);*/
-                //container.find('img').attr('src', data.acf.panoramica.url);
-                //container.css('background-image')= 'url('+data.acf.panoramica.url+')';
+                // load panorama image
                 $('div.viewPano').css( 'background-image', 'url('+data.acf.panoramica.url+')');
                 //$('div.viewPano').css( 'background-size', data.acf.panoramica.height+' '+data.acf.panoramica.width);
-                $('div.viewPano').css( 'width', data.acf.panoramica.width);
+                /*$('div.viewPano').css( 'width', data.acf.panoramica.width);*/
+                var ratio = parseInt($('div.viewPano').css("height").replace("px", ""))*1.0/data.acf.panoramica.height;
+                console.log("ratio "+ratio);
+                var scaledImageWidth = data.acf.panoramica.width * ratio;
+                console.log("background-position: "+ $('div.viewPano').css("background-position"));
+                // BE sure that when switching from map to panorama the interest points remain well located
+                if($('div.viewPano').css("background-position")!=0) $('div.viewPano').css('background-position',0);
+                $('.interest_points').css('width', scaledImageWidth );
+                // Listen for resize changes (landscape to portrait and vice versa)
+                window.addEventListener("resize", function() {
+                	// Get screen size (inner/outerWidth, inner/outerHeight)
+                    ratio = parseInt($('div.viewPano').css("height").replace("px", ""))*1.0/data.acf.panoramica.height;
+                    scaledImageWidth = data.acf.panoramica.width * ratio;
+                    var delta = parseInt($('div.viewPano').css('background-position-x').replace("px", ""));
+                    console.log(delta);
+                    $('.interest_points').css('width', scaledImageWidth);
+                    $('.viewPano').find(".ipoint").each(function(index, ip){
+                        current_left = parseInt($(ip).attr('data-left').replace("%", ""))*scaledImageWidth/100;
+                        console.log("cur-left " + current_left);
+                        $(ip).css('left', current_left +delta +'px');
+                    })
+                    console.log("ALERT");
+                    console.log("ratio changed: "+ratio);
+                }, false);
+                // go through all ip and add annotations and modal window
+                for (var i = 0; i < interestPoints.length; i++) {
+                    ip = interestPoints[i]; var index=i;
+                    $.getJSON( API_BASE_URL+"posts/"+ip.ID, function( data ) {
+                        console.log(API_BASE_URL+"posts/"+ip.ID);
+                        $.each( data.acf, function(key,value  ) {
 
+                            if(value==false) {
+                                console.log(ip.ID+" - catégories vides:"+key+"/ value: "+value);
+                            }
+
+                        });
+                        // append interest points annotations with handlebars (instead of Mustache)
+                        console.log("ip data", data);
+                        console.log(data.title.rendered);
+                        var rendered = '<a href="#" data-target="#pimod'+stepid+'" class="btn btn-info ipoint" role="button" id="pi'+stepid+'" style="left:'+data.acf.left+'; top:'+data.acf.top+';" data-left="'+data.acf.left+'" data-top="'+data.acf.top+'">'+
+                                        data.title.rendered +
+                                        '</a>';
+                        $('.interest_points').append(rendered);
+
+
+                        /*$.get('assets/templates/interest_points_annotation.mst', function(template) {
+                            console.log("ip data", data);
+
+                            var rendered = Mustache.render(template, data);
+                            $('.interest_points').append(rendered);
+
+                            //todo: comment faire si le champ acf est vide??
+                            $.get('templates/interest_points_content.mst', function(template) {
+
+                                var content = Mustache.render(template, data);
+                                $('#modal_ip').append(content);
+
+                                var url = $('#pi'+data.id+' audio').attr('src');
+                                $("#pi"+data.id).on('hide.bs.modal', function(){
+                                    jQuery('#pi'+data.id+' audio').removeAttr("src", jQuery('#pi'+data.id+' audio').removeAttr("src"));
+                                });
+
+                                $("#pi"+data.id).on('show.bs.modal', function(){
+                                    $('#pi'+data.id+' audio').attr('src', url);
+                                });
+
+                                var pi_ = 'pi'+data.id+'.ipoint';
+
+                                $('#'+pi_).on('click touchstart', function() {
+                                    // render modal window
+                                    console.log('click!!!');
+                                    $("#pimod"+data.id).modal();
+                                });
+                            });
+
+
+                        });*/
+                        var contents = data.acf;
+                        console.log("got interest point details", contents);
+                        //console.log("got interest point details: ", contents.size);
+                        for (var j=0; j< contents.length-1; j++) {
+                            console.log(j+" "+contents[j]);
+                        }
+
+
+
+                    });
+                };
 
         });
 
@@ -695,12 +839,12 @@ $(function start() {
 
                 /*container_header.find('h4').text(data.title.rendered);
                 container_body.find('iframe').attr('src',"//www.youtube.com/embed/YE7VzlLtp-4");*/
-
-                $('#myModal').html('<div class="modal-dialog" style="width:600px">' +
-                                        '<div class="modal-content" style="background-color:rgba(255,255,255,0.3); top:20%;left: 5%;position: absolute;width: 90%;height: 66%;z-index: 202;">' +
-                                            '<div class="modal-header" style="border-bottom: 0px solid #e5e5e5">' +
-                                                '<h4 class="modal-title">'+data.title.rendered+'</h4>' +
-                                                '<button type="button" class="close-modal" data-dismiss="modal">&times;</button>' +
+                /*style="background-color:rgba(255,255,255,0.3); top:20%;left: 10%;position: fixed;width: 80%;height: 66%;z-index: 202; border-radius: 6px;">' +
+                    '<div class="modal-header" style="border-bottom: 0px solid #e5e5e5"*/
+                $('#myModal').html('<div class="modal-dialog">' +
+                                        '<div class="modal-content">' +
+                                                '<span class="close-modal" data-dismiss="modal">&times;</span>' +
+                                                '<h3>'+data.title.rendered+'</h3>' +
                                             '<div class="modal-body">' +
                                                 '<iframe id="videoContent" width="100%" height="100%" src="//www.youtube.com/embed/YE7VzlLtp-4" frameborder="0" allowfullscreen></iframe>' + //video could a feature!!
                                     '</div></div></div>')
@@ -732,9 +876,9 @@ $(function start() {
 			container = $('.viewInfo');
 
 		container.find('h3').text("Zamboni Touch Street: Un percorso in 7 Tappe");
-		container.find('img').attr('src', 'assets/images/casa-isolani-residenze-di-epoca-bologna-vista-camera-abbado-580.jpg');
+		//container.find('img').attr('src', 'assets/images/casa-isolani-residenze-di-epoca-bologna-vista-camera-abbado-580.jpg');
 		container.find('audio').attr('src', 'assets/sounds/Event2.wav');
-		container.find('p').text("Il progetto nasce nell’ambito delle recenti iniziative dedicate a via Zamboni, uno dei fulcri principali dell’identità e della vita bolognese, proponendo un percorso di riscoperta dei molteplici aspetti che la connotano attraverso l’utilizzo della multimedialità per offrire un’esperienza interattiva con la strada, caratterizzata dal coinvolgimento multisensoriale.");
+		//container.find('p').text("Il progetto nasce nell’ambito delle recenti iniziative dedicate a via Zamboni, uno dei fulcri principali dell’identità e della vita bolognese, proponendo un percorso di riscoperta dei molteplici aspetti che la connotano attraverso l’utilizzo della multimedialità per offrire un’esperienza interattiva con la strada, caratterizzata dal coinvolgimento multisensoriale.");
 
 		// Show the page.
 		page.addClass('visible');
