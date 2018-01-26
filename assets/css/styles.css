@@ -1,3 +1,7 @@
+/*-----------------
+ 	General
+ -----------------*/
+
 * {
 	margin:0;
 	padding:0;
@@ -23,7 +27,32 @@ h1 a:hover{
 h1, h3{
 	font: normal 18px 'Open Sans', Arial, Helvetica, sans-serif;
 	/*margin: 5px 0px;*/
+
 }
+
+/* -----------------
+	 Google Maps windows
+-----------------*/
+ #map {
+     height: 100%;
+ }
+
+ .gm-style .gm-style-iw {
+    font-size: 16px;
+    font-weight: bold;
+    font-family: sans-serif;
+    text-transform: uppercase;
+    color: #474e5d;
+}
+.gm-style .gm-style-iw p{
+   font-size: 11px;
+   /*font-weight: bold;*/
+   font-family: sans-serif;
+   text-transform: uppercase;
+   color: #474e5d;
+}
+
+
 
 /*-----------------
 	The Header
@@ -46,65 +75,6 @@ header {
 	box-shadow: 0px 3px 2px rgba(0, 0, 0, 0.1);
 }
 
-/*header a {
-	color: #ffffff;
-	text-decoration: none;
-}*/
-/*
-header h2.tzine{
-	float: right;
-	opacity:0.9;
-}
-
-header h2.tzine:hover{
-	opacity:1;
-}
-
-header h2.tzine a{
-	font-size: 13px;
-	text-transform: uppercase;
-	display: inline-block;
-	padding: 12px 18px;
-	border-radius: 3px;
-	background-color: #5895DB;
-}*/
-
-/*ccl: h1 on map*/
-/*header h1 {
-	float: left;
-	font-size: 13px;
-
-}*/
-
-
-
-
-/*ccl :
-button info */
-button{
-	float: right;
-	opacity: 1;
-
-	border-radius: 2px;
-	background-color: #68add5;
-	box-shadow: 1px 1px 1px rgba(120, 120, 120, 0.8);
-	border: 0;
-	color: #ffffff;
-	/*font-weight: bold;*/
-	font-size: 13px;
-	cursor: pointer;
-
-	width: 50px;
-	height: 20px;
-	margin-top: 0px;
-
-
-}
-button:hover{
-	background-color:  #5a96b9;;
-	box-shadow: 0 1px 0px rgba(0, 0, 0, 0.12);
-	font-size: 12px;
-}
 
 /*responsive mode*/
 @media (max-width: 500px){
@@ -121,6 +91,10 @@ button:hover{
 	}
 
 }
+
+
+
+
 
 /*-----------------
 	Main Content
@@ -152,13 +126,8 @@ button:hover{
 
 
 /*---------------------------
-	Info, Pano Page
+	Pages: general info and pano
 ----------------------------*/
-
-.pano, .info{
-	z-index: 100;
-}
-
 .overlay{
 	/*height: 20px;*/
 	width: 100%;
@@ -172,25 +141,42 @@ button:hover{
 
 }
 
-.info.visible .overlay{
-	height: 100%;
+.overlay-modal{
+	/*height: 20px;*/
+	width: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+	background-color: #282b2ccc;
+	transition: 0.6s;
+	z-index: 103;
+
 }
-.pano.visible .overlay{
+
+
+.pano, .info{
+	z-index: 100;
+}
+
+
+.info.visible .overlay,.pano.visible .overlay,.pano.visible .overlay-modal{
 	height: 100%;
 }
 
-/*TODO faire responsive!*/
+.info.visible .viewInfo{
+	opacity: 0.7;
+	transition: 1.4s;
+	pointer-events: auto;
+}
+/*---------------------------
+	viewInfo
+---------------------------*/
+
 .viewInfo{
-	box-sizing: border-box;
-	/*width: 50%;*//*760px;*/
 	height:120px;
-	/*height: 550px;*/
 	position: fixed;
-	/*left: 25%;*//*50%;*/
-	/*margin-left: -375px;*/
-	top: 100px;/*50%;*/
-	/*margin-top: -275px;*/
-	pointer-events: none;
+	text-align: center;
+	top: 100px;
 
 	border-radius: 6px;
 	background-color:  rgba(255,255,255,0.3);
@@ -199,10 +185,11 @@ button:hover{
 	opacity: 0;
 	transition: 0.4s;
 	color: rgba(255,255,255, 1);
-	text-shadow: 0 1px 3px rgba(0,0,0,.5);
 	box-shadow: 0 5px 15px rgba(0,0,0,.5);
+	pointer-events: none;/$ if viewInfo isn't visible*/
 
 }
+
 
 /* For mobile phones: */
 .viewInfo{
@@ -224,16 +211,33 @@ button:hover{
    }
 }
 
-.modal-content{
-	background-color:rgba(255,255,255,0.3);
-	top:20%;
-	/*left: 10%;*/
-	position: fixed;
-	/*width: 80%;*/
-	/*height: 66%;*/
-	z-index: 202;
-	border-radius: 6px;
+/*-----------------
+	Modal
+-----------------*/
+/* modals for interest points have lift */
+#modal_ip .modal-content {
+	height: 100%;
+	overflow-y: scroll;
+	top: 30px;
 }
+
+.modal-content{
+	position: fixed;
+	top:20%;
+
+	border-radius: 6px;
+	background-color:  rgba(255,255,255,0.1);
+
+	z-index: 202;
+
+	transition: 0.4s;
+	color: rgba(255,255,255, 1);
+	box-shadow: 0 5px 15px rgba(0,0,0,.5);
+
+
+
+}
+
 /* For mobile phones: */
 .modal-content{
    width: 100%;
@@ -254,32 +258,39 @@ button:hover{
    }
 }
 
+.modal-content h3{
+	text-align: center;
+}
+.modal-open .modal {
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1050;
+    display: none;
+    overflow: hidden;
+    -webkit-overflow-scrolling: touch;
+    outline: 0;
+
+}
 
 
+/*---------------------------
+	viewPano
+---------------------------*/
 
-
-.viewPano{
-	box-sizing: border-box;
-	height: 100%;
-	position: fixed;
-	left: 0%;
-	top: 0%;
-	pointer-events: none;
-
-	/*border-radius: 6px;*/
-	background-color:  #ffffff;
-
-
-	opacity: 0;
-
-
-	overflow: scroll;
-	position:absolute;
-
+#panorama {
+    height: 100%;
 }
 div.pano{
 
-    overflow:hidden;
+    /*overflow:hidden;*/
 
 }
 
@@ -287,42 +298,65 @@ div.viewPano{
 
     /*overflow:auto;*/
 }
+.pano.visible .viewPano{
+	opacity:1;
+	/*transition: 1.4s;*/
+	pointer-events: auto;
+	z-index: 102;
+}
+.pano.visible #steps_nav, .pano.visible .close, .pano.visible .btn-info{
+	/*transition: 1.4s;*/
+	pointer-events: auto;
+	z-index: 102;
+	opacity: 1;
+}
+.viewPano{
+	/*width:100%;*/
+	position: fixed;
+	left: 0%;
+	top: 0%;
+
+
+	opacity: 0;
+
+	position:absolute;
+	pointer-events: none;
+	background-color: grey;
+
+}
+
+
+.viewPano h3,.viewInfo h3{
+	margin-top: 20px;
+	margin-bottom: 5px;
+
+}
+
+
+
+/*-----------------
+	interest points
+-----------------*/
+
+.interest_points{
+    width:12000px;
+    height: 100%;
+    position: relative;
+}
+.interest_points a {
+	letter-spacing: 1px;
+}
+
 .ipoint{
     position: absolute;
     display: block;
 }
 
-/*.viewPano img {
-	height: 100%;
-	margin: 0 auto;
-	cursor: move;
-	overflow: hidden;
-	background-repeat: repeat-x;
-}*/
-
-.info.visible .viewInfo{
-	opacity: 0.7;
-	transition: 1.4s;
-	/*pointer-events: auto;*/
-}
-.pano.visible .viewPano{
-	opacity:1;
-	transition: 1.4s;
-	pointer-events: auto;
-	z-index: 102;
-}
-.pano.visible #steps_nav, .pano.visible .close, .pano.visible .btn-info{
-	transition: 2s;
-	pointer-events: auto;
-	z-index: 102;
-}
-
-.viewPano h3,.viewInfo h3{
-	margin-top: 20px;
-	margin-bottom: 5px;
-}
 
 
+/*-----------------
+	a
+-----------------*/
 
 a:focus, a:hover {
     /*text-decoration: underline;*/
@@ -340,30 +374,32 @@ a {
 	font-size: 13px;
 	font-variant-caps: small-caps;
 }
-.interest_points a {
-	letter-spacing: 1px;
-}
+
+/*-----------------
+	close
+-----------------*/
+
 .close{
 	position: fixed;
 	right: 1%;
 	top: 2%;
 	font-size: 20px;
 	color: #EFEFEF;
-	opacity: 0.5;
+	opacity: 0;
 	cursor: pointer;
 	text-shadow: 1px 2px 1px rgba(1, 36, 69, 0.9);
 	z-index:-1;
 }
-.btn-info{
-	z-index:-1;
-	cursor:pointer;
-}
+
 .close:hover, .close-info:hover, .close-modal:hover{
 	opacity: 1;
-	transition: 0.0s;
+	color:grey;
 }
 
-
+#modal_ip .close-modal{
+	right: 2%;
+	top: 2%;
+}
 .close-info, .close-modal{
 	position: relative;
 	right: 1%;
@@ -375,6 +411,42 @@ a {
 	float: right;
 }
 
+/*-----------------
+	Button
+-----------------*/
+
+
+button{
+	float: right;
+	opacity: 1;
+
+	border-radius: 2px;
+	background-color: #68add5;
+	box-shadow: 1px 1px 1px rgba(120, 120, 120, 0.8);
+	border: 0;
+	color: #ffffff;
+	/*font-weight: bold;*/
+	font-size: 13px;
+	cursor: pointer;
+
+	width: 50px;
+	height: 20px;
+	margin-top: 0px;
+
+
+}
+button:hover{
+	background-color:  #5a96b9;;
+	box-shadow: 0 1px 0px rgba(0, 0, 0, 0.12);
+	font-size: 12px;
+}
+
+
+.btn-info{
+	z-index:-1;
+	cursor:pointer;
+	opacity: 0;
+}
 
 /*---------------------------
 	Error Page

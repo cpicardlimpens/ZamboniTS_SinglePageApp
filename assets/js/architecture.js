@@ -34,7 +34,7 @@ $(function start() {
 	});
 
     // Info for each pano
-    var infoPanoPage = $('.btn-info');
+    //var infoPanoPage = $('.btn-info');
     /*if ($('#modal_i').hasClass('visible')) {
 
         var stepid = window.location.href.split('#stepinfo/')[1].trim();
@@ -281,8 +281,16 @@ $(function start() {
             '#stepinfo': function() {
                 // Get the index of which step we want to show and call the appropriate function.
                 var stepid = url.split('#stepinfo/')[1].trim();
-                renderStepPanoramaPage(stepid);
+                //renderStepPanoramaPage(stepid);
                 renderStepInfoPanoramaPage(stepid);
+            },
+            // Step interest point page.
+            '#stepinterestpoint': function() {
+                // Get the index of which step we want to show and call the appropriate function.
+                //var stepid = (url.split('#stepinterestpoint/')[1]).split('_')[0].trim();
+                var pointid = url.split('#stepinterestpoint/')[1].trim();
+                //renderStepPanoramaPage(stepid);
+                renderStepInterestPointPanoramaPage(pointid);
             },
             // Step panorama page.
             '#step': function() {
@@ -677,10 +685,15 @@ $(function start() {
 
         // Info for each pano
         var infoPanoPage = $('.btn-info');
+        // Empty the interest points each time we go to another StepPanoramaPage, empty attribute to width
+        $('.interest_points').empty();
+        $('.modal_i').empty();
+
+        $('div.viewPano').css('width','');
 
         infoPanoPage.on('click', function (e) {
     		window.location.hash = '#stepinfo/'+stepid;
-            infoPanoPage.addClass('visible');
+            //infoPanoPage.addClass('visible');
     	});
 
         var steps = list_steps.split('_');
@@ -727,17 +740,26 @@ $(function start() {
         $("#steps_nav" ).html(new_content1);
 
         $.getJSON( API_BASE_URL+"listings/"+stepid, function( data ) {
-                console.log("got listing details", data);
+                //console.log("got listing details", data);
                 var interestPoints = data.acf.pint;
 
                 // load panorama image
                 $('div.viewPano').css( 'background-image', 'url('+data.acf.panoramica.url+')');
+                console.log((data.acf.panoramica.width*$( window ).height()/data.acf.panoramica.height)+" VS "+$( window ).width());
+                if((data.acf.panoramica.width*$( window ).height()/data.acf.panoramica.height) < $( window ).width()) {
+                    $('div.viewPano').css('width','100%');
+                    console.log("SMALL");
+                }
+                // appel à pano.js, mais pas de style préalable dans le .html?
+                /*$("#panorama").pano({
+                    img: data.acf.panoramica.url
+                });*/
                 //$('div.viewPano').css( 'background-size', data.acf.panoramica.height+' '+data.acf.panoramica.width);
                 /*$('div.viewPano').css( 'width', data.acf.panoramica.width);*/
                 var ratio = parseInt($('div.viewPano').css("height").replace("px", ""))*1.0/data.acf.panoramica.height;
-                console.log("ratio "+ratio);
+                //console.log("ratio "+ratio);
                 var scaledImageWidth = data.acf.panoramica.width * ratio;
-                console.log("background-position: "+ $('div.viewPano').css("background-position"));
+                //console.log("background-position: "+ $('div.viewPano').css("background-position"));
                 // BE sure that when switching from map to panorama the interest points remain well located
                 if($('div.viewPano').css("background-position")!=0) $('div.viewPano').css('background-position',0);
                 $('.interest_points').css('width', scaledImageWidth );
@@ -747,11 +769,11 @@ $(function start() {
                     ratio = parseInt($('div.viewPano').css("height").replace("px", ""))*1.0/data.acf.panoramica.height;
                     scaledImageWidth = data.acf.panoramica.width * ratio;
                     var delta = parseInt($('div.viewPano').css('background-position-x').replace("px", ""));
-                    console.log(delta);
+                    //console.log(delta);
                     $('.interest_points').css('width', scaledImageWidth);
                     $('.viewPano').find(".ipoint").each(function(index, ip){
                         current_left = parseInt($(ip).attr('data-left').replace("%", ""))*scaledImageWidth/100;
-                        console.log("cur-left " + current_left);
+                        //console.log("cur-left " + current_left);
                         $(ip).css('left', current_left +delta +'px');
                     })
                     console.log("ALERT");
@@ -761,61 +783,23 @@ $(function start() {
                 for (var i = 0; i < interestPoints.length; i++) {
                     ip = interestPoints[i]; var index=i;
                     $.getJSON( API_BASE_URL+"posts/"+ip.ID, function( data ) {
-                        console.log(API_BASE_URL+"posts/"+ip.ID);
+                        //console.log(API_BASE_URL+"posts/"+ip.ID);
+                        console.log(ip.ID+" VS "+data.id);
                         $.each( data.acf, function(key,value  ) {
 
                             if(value==false) {
-                                console.log(ip.ID+" - catégories vides:"+key+"/ value: "+value);
+                                //console.log(ip.ID+" - empty category:"+key+"/ value: "+value);
                             }
 
                         });
                         // append interest points annotations with handlebars (instead of Mustache)
-                        console.log("ip data", data);
-                        console.log(data.title.rendered);
-                        var rendered = '<a href="#" data-target="#pimod'+stepid+'" class="btn btn-info ipoint" role="button" id="pi'+stepid+'" style="left:'+data.acf.left+'; top:'+data.acf.top+';" data-left="'+data.acf.left+'" data-top="'+data.acf.top+'">'+
-                                        data.title.rendered +
-                                        '</a>';
+                        //console.log("ip data", data);
+                        //console.log(data.title.rendered);
+                        // TODO href de la modal du point d'intérêt
+                        var rendered = '<a href="#stepinterestpoint/'+data.id+'" data-target="#pimod'+data.id+'" class="btn btn-info ipoint" role="button" id="pi'+data.id+'" style="left:'+data.acf.left+'; top:'+data.acf.top+';" data-left="'+data.acf.left+'" data-top="'+data.acf.top+'">'
+                                       + data.title.rendered
+                                       + '</a>';
                         $('.interest_points').append(rendered);
-
-
-                        /*$.get('assets/templates/interest_points_annotation.mst', function(template) {
-                            console.log("ip data", data);
-
-                            var rendered = Mustache.render(template, data);
-                            $('.interest_points').append(rendered);
-
-                            //todo: comment faire si le champ acf est vide??
-                            $.get('templates/interest_points_content.mst', function(template) {
-
-                                var content = Mustache.render(template, data);
-                                $('#modal_ip').append(content);
-
-                                var url = $('#pi'+data.id+' audio').attr('src');
-                                $("#pi"+data.id).on('hide.bs.modal', function(){
-                                    jQuery('#pi'+data.id+' audio').removeAttr("src", jQuery('#pi'+data.id+' audio').removeAttr("src"));
-                                });
-
-                                $("#pi"+data.id).on('show.bs.modal', function(){
-                                    $('#pi'+data.id+' audio').attr('src', url);
-                                });
-
-                                var pi_ = 'pi'+data.id+'.ipoint';
-
-                                $('#'+pi_).on('click touchstart', function() {
-                                    // render modal window
-                                    console.log('click!!!');
-                                    $("#pimod"+data.id).modal();
-                                });
-                            });
-
-
-                        });*/
-                        var contents = data.acf;
-                        console.log("got interest point details", contents);
-                        //console.log("got interest point details: ", contents.size);
-                        for (var j=0; j< contents.length-1; j++) {
-                            console.log(j+" "+contents[j]);
-                        }
 
 
 
@@ -827,6 +811,119 @@ $(function start() {
 
 		// Show the page.
 		page.addClass('visible');
+    }
+    // modal for interest point
+    function renderStepInterestPointPanoramaPage(pointid){
+
+        $.getJSON( API_BASE_URL+"posts/"+pointid, function( data ) {
+
+
+            // TODO fonction particuliere qui ouvre la modale du point d'intérêt
+            var content = '<div class="modal fade" id="pimod'+data.id+'" role="dialog">'+
+                              '<div class="modal-dialog">'+
+                              '<div class="overlay-modal" style="z-index:104">'+
+                                  '<div class="modal-content">'+
+                                      '<div class="modal-header" style="border-bottom: 0px solid #e5e5e5">'+
+                                        /*'<span class="close-modal" data-dismiss="modal">&times;</span>' +*/
+                                        '<h3 class="modal-title">'+data.title.rendered+'</h3>'+
+                                      '</div>'+
+                                      '<div class="modal-body" style="color:white; padding:10px; height: 1100px;">'+
+                                            '<div class="p_modal">'+data.acf.scheda_tecnica+'</div>'+
+                                            '<br>'+
+                                            '<div class="p_modal">'+data.acf.intro_t+'</div>'+
+                                            '<br>'+
+                                            ( typeof data.acf.desc_gnal_a.url  !== "undefined" ? '<audio controls><source src="'+data.acf.desc_gnal_a.url+'" type="audio/wav"></audio>': '' )+
+                                            '<br>'+
+                                            ( typeof data.acf.dentro_i1.url  !== "undefined" ? '<div class="responsive-50"><div class="gallery"><a target="_blank" href="'+data.acf.dentro_i1.url+'"><img src="'+data.acf.dentro_i1.url+'" alt="" style="padding: 5px 10px 0px 4px;" ></a></div></div>': '' )+
+                                            ( typeof data.acf.dentro_i2.url  !== "undefined" ? '<div class="responsive-50"><div class="gallery"><a target="_blank" href="'+data.acf.dentro_i2.url+'"><img src="'+data.acf.dentro_i2.url+'" alt="" style="padding: 5px 10px 0px 4px;" ></a></div></div>': '' )+
+                                            ( typeof data.acf.dentro_i3.url  !== "undefined" ? '<div class="responsive-50"><div class="gallery"><a target="_blank" href="'+data.acf.dentro_i3.url+'"><img src="'+data.acf.dentro_i3.url+'" alt="" style="padding: 5px 10px 0px 4px;" ></a></div></div>': '' )+
+                                            '<div class="clearfix"></div>'+
+                                            '<br>'+
+                                            '<h4 class="modal-title">Esperienza</h4>'+
+                                            '<div class="p_modal">'+data.acf.esperienza_t+'</div>'+
+                                            ( typeof data.acf.esperienza_a.url  !== "undefined" ? '<audio controls><source src="'+data.acf.esperienza_a.url+'" type="audio/wav"></audio>': '' )+
+                                            ( typeof data.acf.esperienza_i.url  !== "undefined" ? '<div class="responsive-100"><div class="gallery"><a target="_blank" href="'+data.acf.esperienza_i.url+'"><img src="'+data.acf.esperienza_i.url+'" alt="" ></a></div></div>': '' )+
+                                            '<div class="clearfix"></div>'+
+                                        '</div>'+
+                                    '</div>'+
+                                '</div>'+
+                                '</div>'+
+                            '</div>';
+            $('#modal_ip').append(content);
+            var pi_ = 'pi'+data.id+'.ipoint';
+            // dismiss when clicking outside the modal
+            $('.modal').on('click', function(e) {
+                if (!$(e.target).closest(".modal-content").length) {
+                    $(".modal").fadeOut(175);
+                }
+            });
+
+            $(".modal").click(function(e) {
+                e.stopPropagation();
+            });
+
+            $("#pi"+data.id).on('hide.bs.modal', function(){
+                jQuery('#pi'+data.id+' audio').removeAttr("src", jQuery('#pi'+data.id+' audio').removeAttr("src"));
+                $('.modal_ip').empty();
+            });
+
+            $("#pi"+data.id).on('show.bs.modal', function(){
+                $('#pi'+data.id+' audio').attr('src', url);
+            });
+
+
+
+
+            $('#'+pi_).on('click touchstart', function() {
+                // render modal window
+                console.log('click!!!');
+                //$("#pimod"+data.id).modal();
+                var target = ($(this).attr('data-target'));
+                $(target).fadeIn(175);
+            });
+
+            /*$.get('assets/templates/interest_points_annotation.mst', function(template) {
+                console.log("ip data", data);
+
+                var rendered = Mustache.render(template, data);
+                $('.interest_points').append(rendered);
+
+                //todo: comment faire si le champ acf est vide??
+                $.get('templates/interest_points_content.mst', function(template) {
+
+                    var content = Mustache.render(template, data);
+                    $('#modal_ip').append(content);
+
+                    var url = $('#pi'+data.id+' audio').attr('src');
+                    $("#pi"+data.id).on('hide.bs.modal', function(){
+                        jQuery('#pi'+data.id+' audio').removeAttr("src", jQuery('#pi'+data.id+' audio').removeAttr("src"));
+                    });
+
+                    $("#pi"+data.id).on('show.bs.modal', function(){
+                        $('#pi'+data.id+' audio').attr('src', url);
+                    });
+
+                    var pi_ = 'pi'+data.id+'.ipoint';
+
+                    $('#'+pi_).on('click touchstart', function() {
+                        // render modal window
+                        console.log('click!!!');
+                        $("#pimod"+data.id).modal();
+                    });
+                });
+
+
+            });*/
+            var contents = data.acf;
+            //console.log("got interest point details", contents);
+            for (var j=0; j< contents.length-1; j++) {
+                //console.log(j+" "+contents[j]);
+            }
+
+
+
+        });
+
     }
 
     // Intro for panorama
@@ -854,9 +951,9 @@ $(function start() {
                 //video:data.acf.video_introduttivo
 
                 $('#myModal').on('hide.bs.modal', function(){
-                    console.log('close modal dans fonction');
+                    //console.log('close modal dans fonction');
                     jQuery('#myModal iframe').removeAttr("src", jQuery('#myModal iframe').removeAttr("src"));
-                    window.location.hash = 'step/'+stepid;
+                    //window.location.hash = 'step/'+stepid;
                 });
 
                 $('#myModal').on('show.bs.modal', function(){
