@@ -285,13 +285,13 @@ $(function start() {
                 renderStepInfoPanoramaPage(stepid);
             },
             // Step interest point page.
-            '#stepinterestpoint': function() {
+            /*'#stepinterestpoint': function() {
                 // Get the index of which step we want to show and call the appropriate function.
                 //var stepid = (url.split('#stepinterestpoint/')[1]).split('_')[0].trim();
                 var pointid = url.split('#stepinterestpoint/')[1].trim();
                 //renderStepPanoramaPage(stepid);
                 renderStepInterestPointPanoramaPage(pointid);
-            },
+            },*/
             // Step panorama page.
             '#step': function() {
                 // Get the index of which step we want to show and call the appropriate function.
@@ -796,11 +796,11 @@ $(function start() {
                         //console.log("ip data", data);
                         //console.log(data.title.rendered);
                         // TODO href de la modal du point d'intérêt
-                        var rendered = '<a href="#stepinterestpoint/'+data.id+'" data-target="#pimod'+data.id+'" class="btn btn-info ipoint" role="button" id="pi'+data.id+'" style="left:'+data.acf.left+'; top:'+data.acf.top+';" data-left="'+data.acf.left+'" data-top="'+data.acf.top+'">'
+                        /*var rendered = '<a data-target="#pimod'+data.id+'" class="btn btn-info ipoint" role="button" id="pi'+data.id+'" style="left:'+data.acf.left+'; top:'+data.acf.top+';" data-left="'+data.acf.left+'" data-top="'+data.acf.top+'">'
                                        + data.title.rendered
                                        + '</a>';
-                        $('.interest_points').append(rendered);
-
+                        $('.interest_points').append(rendered);*/
+                        renderStepInterestPointPanoramaPage(data.id);
 
 
                     });
@@ -817,32 +817,35 @@ $(function start() {
 
         $.getJSON( API_BASE_URL+"posts/"+pointid, function( data ) {
 
-
+            var rendered = '<a data-target="#pimod'+data.id+'" class="btn btn-info ipoint" role="button" id="pi'+data.id+'" style="left:'+data.acf.left+'; top:'+data.acf.top+';" data-left="'+data.acf.left+'" data-top="'+data.acf.top+'">'
+                           + data.title.rendered
+                           + '</a>';
+            $('.interest_points').append(rendered);
             // TODO fonction particuliere qui ouvre la modale du point d'intérêt
             var content = '<div class="modal fade" id="pimod'+data.id+'" role="dialog">'+
                               '<div class="modal-dialog">'+
                               '<div class="overlay-modal" style="z-index:104">'+
-                                  '<div class="modal-content">'+
+                                  '<div class="modal-content" style="height:85%;">'+
                                       '<div class="modal-header" style="border-bottom: 0px solid #e5e5e5">'+
                                         /*'<span class="close-modal" data-dismiss="modal">&times;</span>' +*/
                                         '<h3 class="modal-title">'+data.title.rendered+'</h3>'+
                                       '</div>'+
-                                      '<div class="modal-body" style="color:white; padding:10px; height: 1100px;">'+
+                                      '<div class="modal-body" style="color:white; padding:10px;">'+
                                             '<div class="p_modal">'+data.acf.scheda_tecnica+'</div>'+
                                             '<br>'+
                                             '<div class="p_modal">'+data.acf.intro_t+'</div>'+
                                             '<br>'+
                                             ( typeof data.acf.desc_gnal_a.url  !== "undefined" ? '<audio controls><source src="'+data.acf.desc_gnal_a.url+'" type="audio/wav"></audio>': '' )+
                                             '<br>'+
-                                            ( typeof data.acf.dentro_i1.url  !== "undefined" ? '<div class="responsive-50"><div class="gallery"><a target="_blank" href="'+data.acf.dentro_i1.url+'"><img src="'+data.acf.dentro_i1.url+'" alt="" style="padding: 5px 10px 0px 4px;" ></a></div></div>': '' )+
-                                            ( typeof data.acf.dentro_i2.url  !== "undefined" ? '<div class="responsive-50"><div class="gallery"><a target="_blank" href="'+data.acf.dentro_i2.url+'"><img src="'+data.acf.dentro_i2.url+'" alt="" style="padding: 5px 10px 0px 4px;" ></a></div></div>': '' )+
-                                            ( typeof data.acf.dentro_i3.url  !== "undefined" ? '<div class="responsive-50"><div class="gallery"><a target="_blank" href="'+data.acf.dentro_i3.url+'"><img src="'+data.acf.dentro_i3.url+'" alt="" style="padding: 5px 10px 0px 4px;" ></a></div></div>': '' )+
+                                            ( typeof data.acf.dentro_i1.url  !== "undefined" ? '<div class="responsive-100"><div class="gallery"><a target="_blank" href="'+data.acf.dentro_i1.url+'" style="background-color: transparent; padding:0px;"><img src="'+data.acf.dentro_i1.url+'" alt="" ></a></div></div>': '' )+
+                                            ( typeof data.acf.dentro_i2.url  !== "undefined" ? '<div class="responsive-100"><div class="gallery"><a target="_blank" href="'+data.acf.dentro_i2.url+'" style="background-color: transparent; padding:0px;"><img src="'+data.acf.dentro_i2.url+'" alt="" ></a></div></div>': '' )+
+                                            ( typeof data.acf.dentro_i3.url  !== "undefined" ? '<div class="responsive-100"><div class="gallery"><a target="_blank" href="'+data.acf.dentro_i3.url+'" style="background-color: transparent; padding:0px;"><img src="'+data.acf.dentro_i3.url+'" alt="" ></a></div></div>': '' )+
                                             '<div class="clearfix"></div>'+
                                             '<br>'+
                                             '<h4 class="modal-title">Esperienza</h4>'+
                                             '<div class="p_modal">'+data.acf.esperienza_t+'</div>'+
                                             ( typeof data.acf.esperienza_a.url  !== "undefined" ? '<audio controls><source src="'+data.acf.esperienza_a.url+'" type="audio/wav"></audio>': '' )+
-                                            ( typeof data.acf.esperienza_i.url  !== "undefined" ? '<div class="responsive-100"><div class="gallery"><a target="_blank" href="'+data.acf.esperienza_i.url+'"><img src="'+data.acf.esperienza_i.url+'" alt="" ></a></div></div>': '' )+
+                                            ( typeof data.acf.esperienza_i.url  !== "undefined" ? '<div class="responsive-100"><div class="gallery"><a target="_blank" href="'+data.acf.esperienza_i.url+'" style="background-color: transparent;"><img src="'+data.acf.esperienza_i.url+'" alt="" ></a></div></div>': '' )+
                                             '<div class="clearfix"></div>'+
                                         '</div>'+
                                     '</div>'+
@@ -869,6 +872,11 @@ $(function start() {
 
             $("#pi"+data.id).on('show.bs.modal', function(){
                 $('#pi'+data.id+' audio').attr('src', url);
+                /*$(this).find('.modal-body').css({
+                    width:'auto', //probably not needed
+                    height:'auto', //probably not needed
+                    'max-height':'100%'
+       });*/
             });
 
 

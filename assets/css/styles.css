@@ -216,12 +216,15 @@ header {
 -----------------*/
 /* modals for interest points have lift */
 #modal_ip .modal-content {
-	height: 100%;
+
 	overflow-y: scroll;
 	top: 30px;
 }
-
+/* modal-content a par défaut une hauteur ajustée au contenu
+pour permettre l'ascenseur->fixer la hauteur (cas des points d'intérêts)
+pour s'assurer que l'ensemble du contenu est lisible pr les pts d'intérêts height:85% inline*/
 .modal-content{
+
 	position: fixed;
 	top:20%;
 
