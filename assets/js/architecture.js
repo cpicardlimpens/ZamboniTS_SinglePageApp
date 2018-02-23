@@ -774,10 +774,10 @@ $(function start() {
                 // load panorama image
                 //$('div.viewPano').css( 'background-image', 'url('+monImage.src+')');
                 //$('div.viewPano').css('background-image', 'url('+data.acf.panoramica.url+')');
-                $('<img/>').attr('src', data.acf.panoramica.url).on('load', function() {
+                /*$('<img/>').attr('src', data.acf.panoramica.url).on('load', function() {
                    $(this).remove(); // prevent memory leaks
                    console.log('loading');
-                   // FIXME: use pano.js hook here 
+                   // FIXME: use pano.js hook here
                    $('div.viewPano').css('background-image', 'url('+data.acf.panoramica.url+')');
                });
 
@@ -785,11 +785,11 @@ $(function start() {
                 if((data.acf.panoramica.width*$( window ).height()/data.acf.panoramica.height) < $( window ).width()) {
                     $('div.viewPano').css('width','100%');
                     console.log("SMALL");
-                }
+                }*/
                 // appel à pano.js, mais pas de style préalable dans le .html?
-                /*$("#panorama").pano({
+                $("#panorama").pano({
                     img: data.acf.panoramica.url
-                });*/
+                });
                 //$('div.viewPano').css( 'background-size', data.acf.panoramica.height+' '+data.acf.panoramica.width);
                 /*$('div.viewPano').css( 'width', data.acf.panoramica.width);*/
                 var ratio = parseInt($('div.viewPano').css("height").replace("px", ""))*1.0/data.acf.panoramica.height;
@@ -799,6 +799,11 @@ $(function start() {
                 // BE sure that when switching from map to panorama the interest points remain well located
                 if($('div.viewPano').css("background-position")!=0) $('div.viewPano').css('background-position',0);
                 $('.interest_points').css('width', scaledImageWidth );
+                // FIXME lorsque pano est moins large que l'écran
+                /*if($('.interest_points').css('width') < $( window ).width()) {
+                    $('.interest_points').css('width',$( window ).width());
+                    console.log("SMALL");
+                }*/
                 // Listen for resize changes (landscape to portrait and vice versa)
                 window.addEventListener("resize", function() {
                 	// Get screen size (inner/outerWidth, inner/outerHeight)
