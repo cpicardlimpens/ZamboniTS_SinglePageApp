@@ -679,23 +679,21 @@ $(function start() {
     function renderStepPanoramaPage(stepid){
         // Shows the step panorama Page with appropriate id.
         // grab data from backend
-
         var page = $('.pano'),
 			container = $('.viewPano');
-
         // Info for each pano
         var infoPanoPage = $('.btn-info');
         // Empty the interest points each time we go to another StepPanoramaPage, empty attribute to width
         $('.interest_points').empty();
         $('.modal_i').empty();
-
         $('div.viewPano').css('width','');
-
+        // show stepinfo on click
         infoPanoPage.on('click', function (e) {
     		window.location.hash = '#stepinfo/'+stepid;
             //infoPanoPage.addClass('visible');
     	});
 
+        // FIXME: put l696 to l737 in a function
         var steps = list_steps.split('_');
         var p; var n; var s;
         for (var i=0; i< steps.length-1; i++) {
@@ -717,7 +715,7 @@ $(function start() {
 
             }
         }
-        // FIXME : more compact??
+        // FIXME : more compact?? => use a mustache template
         var new_content1 = "";
         if(p==" "){
             new_content1 += '    '
@@ -742,9 +740,47 @@ $(function start() {
         $.getJSON( API_BASE_URL+"listings/"+stepid, function( data ) {
                 //console.log("got listing details", data);
                 var interestPoints = data.acf.pint;
+                //$('.interest_points').css({opacity:0})
+                var monImage = new Image();
+                monImage.src = data.acf.panoramica.url;
+                /*monImage.onload = function()
+                {
 
+                   alert("Chargement fini !");
+
+               }*/
+
+
+                function loaded() {
+                  alert('loaded')
+                }
+
+                /*$('div.viewPano').load(function(){
+                    $('.loader').fadeOut();
+                });*/
+/*
+                if (monImage.complete) {
+                  //loaded();
+                  //var pano = document.getElementById("panorama");
+                  //pano.removeChild(pano.childNodes[0]);
+                  $('.interest_points').fadeTo("slow",1);
+                  //$('.loader').fadeOut();
+                } else {
+                    //$('#panorama').html('<div class="loader"></div>'); //remove it when loaded!!
+                    //$('.interest_points').removeClass('visible');
+                    $('.interest_points').fadeTo("slow",0);
+                }
+*/
                 // load panorama image
-                $('div.viewPano').css( 'background-image', 'url('+data.acf.panoramica.url+')');
+                //$('div.viewPano').css( 'background-image', 'url('+monImage.src+')');
+                //$('div.viewPano').css('background-image', 'url('+data.acf.panoramica.url+')');
+                $('<img/>').attr('src', data.acf.panoramica.url).on('load', function() {
+                   $(this).remove(); // prevent memory leaks
+                   console.log('loading');
+                   // FIXME: use pano.js hook here 
+                   $('div.viewPano').css('background-image', 'url('+data.acf.panoramica.url+')');
+               });
+
                 console.log((data.acf.panoramica.width*$( window ).height()/data.acf.panoramica.height)+" VS "+$( window ).width());
                 if((data.acf.panoramica.width*$( window ).height()/data.acf.panoramica.height) < $( window ).width()) {
                     $('div.viewPano').css('width','100%');
@@ -771,6 +807,7 @@ $(function start() {
                     var delta = parseInt($('div.viewPano').css('background-position-x').replace("px", ""));
                     //console.log(delta);
                     $('.interest_points').css('width', scaledImageWidth);
+                    //$('.interest_points').css({opacity:0});
                     $('.viewPano').find(".ipoint").each(function(index, ip){
                         current_left = parseInt($(ip).attr('data-left').replace("%", ""))*scaledImageWidth/100;
                         //console.log("cur-left " + current_left);
@@ -826,11 +863,11 @@ $(function start() {
                               '<div class="modal-dialog">'+
                               '<div class="overlay-modal" style="z-index:104">'+
                                   '<div class="modal-content" style="height:85%;">'+
-                                      '<div class="modal-header" style="border-bottom: 0px solid #e5e5e5">'+
+                                      '<div class="modal-header" style="border-bottom: 1px solid #e5e5e5 padding:2px;">'+
                                         /*'<span class="close-modal" data-dismiss="modal">&times;</span>' +*/
                                         '<h3 class="modal-title">'+data.title.rendered+'</h3>'+
                                       '</div>'+
-                                      '<div class="modal-body" style="color:white; padding:10px;">'+
+                                      '<div class="modal-body" style="color:white; padding:12px;">'+
                                             '<div class="p_modal">'+data.acf.scheda_tecnica+'</div>'+
                                             '<br>'+
                                             '<div class="p_modal">'+data.acf.intro_t+'</div>'+
