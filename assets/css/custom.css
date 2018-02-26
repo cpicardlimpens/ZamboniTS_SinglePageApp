@@ -57,7 +57,7 @@ p {
  * Navigation
  */
 
-.navbar {
+/*.navbar {
     padding-top: 15px;
     padding-bottom: 15px;
     border: 0;
@@ -65,11 +65,11 @@ p {
     margin-bottom: 0;
     font-size: 12px;
     letter-spacing: 5px;
-}
+}*/
 
-.navbar-nav li a:hover {
+/*.navbar-nav li a:hover {
     color: #1abc9c !important;
-}
+}*/
 
 /* active button*/
 .active {
@@ -99,6 +99,7 @@ div.gallery:hover {
 div.gallery img {
     width: 100%;
     height: auto;
+    padding-top: 5px;
 }
 
 div.desc {

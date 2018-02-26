@@ -740,59 +740,36 @@ $(function start() {
         $.getJSON( API_BASE_URL+"listings/"+stepid, function( data ) {
                 //console.log("got listing details", data);
                 var interestPoints = data.acf.pint;
-                //$('.interest_points').css({opacity:0})
-                var monImage = new Image();
-                monImage.src = data.acf.panoramica.url;
-                /*monImage.onload = function()
-                {
 
-                   alert("Chargement fini !");
-
-               }*/
-
-
-                function loaded() {
-                  alert('loaded')
-                }
-
-                /*$('div.viewPano').load(function(){
-                    $('.loader').fadeOut();
-                });*/
-/*
-                if (monImage.complete) {
-                  //loaded();
-                  //var pano = document.getElementById("panorama");
-                  //pano.removeChild(pano.childNodes[0]);
-                  $('.interest_points').fadeTo("slow",1);
-                  //$('.loader').fadeOut();
-                } else {
-                    //$('#panorama').html('<div class="loader"></div>'); //remove it when loaded!!
-                    //$('.interest_points').removeClass('visible');
-                    $('.interest_points').fadeTo("slow",0);
-                }
-*/
-                // load panorama image
-                //$('div.viewPano').css( 'background-image', 'url('+monImage.src+')');
-                //$('div.viewPano').css('background-image', 'url('+data.acf.panoramica.url+')');
-                /*$('<img/>').attr('src', data.acf.panoramica.url).on('load', function() {
-                   $(this).remove(); // prevent memory leaks
-                   console.log('loading');
-                   // FIXME: use pano.js hook here
-                   $('div.viewPano').css('background-image', 'url('+data.acf.panoramica.url+')');
-               });
-
-                console.log((data.acf.panoramica.width*$( window ).height()/data.acf.panoramica.height)+" VS "+$( window ).width());
-                if((data.acf.panoramica.width*$( window ).height()/data.acf.panoramica.height) < $( window ).width()) {
-                    $('div.viewPano').css('width','100%');
-                    console.log("SMALL");
-                }*/
                 // appel à pano.js, mais pas de style préalable dans le .html?
                 $("#panorama").pano({
                     img: data.acf.panoramica.url
                 });
-                //$('div.viewPano').css( 'background-size', data.acf.panoramica.height+' '+data.acf.panoramica.width);
-                /*$('div.viewPano').css( 'width', data.acf.panoramica.width);*/
-                var ratio = parseInt($('div.viewPano').css("height").replace("px", ""))*1.0/data.acf.panoramica.height;
+
+                var ratio = parseInt($('#panorama').css("height").replace("px", ""))*1.0/data.acf.panoramica.height;
+                console.log("ratio "+ratio);
+                var scaledImageWidth = data.acf.panoramica.width * ratio;
+                console.log("background-position: "+ $('#panorama').css("background-position"));
+                // BE sure that when switching from map to panorama the interest points remain well located
+                if($('#panorama').css("background-position")!=0) $('#panorama').css('background-position',0);
+                $('.interest_points').css('width', scaledImageWidth );
+                // Listen for resize changes (landscape to portrait and vice versa)
+                window.addEventListener("resize", function() {
+                	// Get screen size (inner/outerWidth, inner/outerHeight)
+                    ratio = parseInt($('#panorama').css("height").replace("px", ""))*1.0/data.acf.panoramica.height;
+                    scaledImageWidth = data.acf.panoramica.width * ratio;
+                    var delta = parseInt($('#panorama').css('background-position-x').replace("px", ""));
+                    console.log(delta);
+                    $('.interest_points').css('width', scaledImageWidth);
+                    $(panorama).find(".ipoint").each(function(index, ip){
+                        current_left = parseInt($(ip).attr('data-left').replace("%", ""))*scaledImageWidth/100;
+                        console.log("cur-left " + current_left);
+                        $(ip).css('left', current_left +delta +'px');
+                    })
+                    console.log("ALERT");
+                    console.log("ratio changed: "+ratio);
+                }, false);
+                /*var ratio = parseInt($('div.viewPano').css("height").replace("px", ""))*1.0/data.acf.panoramica.height;
                 //console.log("ratio "+ratio);
                 var scaledImageWidth = data.acf.panoramica.width * ratio;
                 //console.log("background-position: "+ $('div.viewPano').css("background-position"));
@@ -800,10 +777,10 @@ $(function start() {
                 if($('div.viewPano').css("background-position")!=0) $('div.viewPano').css('background-position',0);
                 $('.interest_points').css('width', scaledImageWidth );
                 // FIXME lorsque pano est moins large que l'écran
-                /*if($('.interest_points').css('width') < $( window ).width()) {
-                    $('.interest_points').css('width',$( window ).width());
-                    console.log("SMALL");
-                }*/
+                //if($('.interest_points').css('width') < $( window ).width()) {
+                //    $('.interest_points').css('width',$( window ).width());
+                //    console.log("SMALL");
+                //}
                 // Listen for resize changes (landscape to portrait and vice versa)
                 window.addEventListener("resize", function() {
                 	// Get screen size (inner/outerWidth, inner/outerHeight)
@@ -812,7 +789,7 @@ $(function start() {
                     var delta = parseInt($('div.viewPano').css('background-position-x').replace("px", ""));
                     //console.log(delta);
                     $('.interest_points').css('width', scaledImageWidth);
-                    //$('.interest_points').css({opacity:0});
+
                     $('.viewPano').find(".ipoint").each(function(index, ip){
                         current_left = parseInt($(ip).attr('data-left').replace("%", ""))*scaledImageWidth/100;
                         //console.log("cur-left " + current_left);
@@ -821,6 +798,7 @@ $(function start() {
                     console.log("ALERT");
                     console.log("ratio changed: "+ratio);
                 }, false);
+                */
                 // go through all ip and add annotations and modal window
                 for (var i = 0; i < interestPoints.length; i++) {
                     ip = interestPoints[i]; var index=i;

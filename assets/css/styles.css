@@ -290,21 +290,14 @@ pour s'assurer que l'ensemble du contenu est lisible pr les pts d'intérêts hei
 #panorama {
     height: 100%;
 }
-div.pano{
 
-    /*overflow:hidden;*/
-
-}
-
-div.viewPano{
-
-    /*overflow:auto;*/
-}
 .pano.visible .viewPano{
 	opacity:1;
 	/*transition: 1.4s;*/
 	pointer-events: auto;
 	z-index: 102;
+	overflow: hidden;
+	cursor: move;
 }
 .pano.visible #steps_nav, .pano.visible .close, .pano.visible .btn-info{
 	/*transition: 1.4s;*/
@@ -313,7 +306,7 @@ div.viewPano{
 	opacity: 1;
 }
 .viewPano{
-	/*width:100%;*/
+	width:100%;
 	position: fixed;
 	left: 0%;
 	top: 0%;
