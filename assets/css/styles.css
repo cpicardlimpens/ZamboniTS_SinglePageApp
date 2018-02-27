@@ -316,7 +316,7 @@ pour s'assurer que l'ensemble du contenu est lisible pr les pts d'intérêts hei
 
 	position:absolute;
 	pointer-events: none;
-	background-color: grey;
+	background-color: White;
 
 }
 
@@ -449,6 +449,9 @@ button:hover{
 /*-----------------
 	Loader for images
 -----------------*/
+#loading-indicator {
+	display: none;
+}
 
 .loader {
 	position: fixed;
