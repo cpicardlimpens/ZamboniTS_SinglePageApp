@@ -742,6 +742,8 @@ $(function start() {
                 var interestPoints = data.acf.pint;
                 var $loadingIndicator = $('#loading-indicator');
                 $('.interest_points').css('opacity',0.0);
+                $("#steps_nav" ).css('opacity',0.0);
+                infoPanoPage.css('opacity',0.0);
                 // Loader indicator
                 $loadingIndicator.show();
                 // appel à pano.js
@@ -755,6 +757,8 @@ $(function start() {
                     console.log( ' image loaded!!' );
                     $loadingIndicator.hide();
                     $('.interest_points').css('opacity',1.0);
+                    $("#steps_nav" ).css('opacity',1.0);
+                    infoPanoPage.css('opacity',1.0);
                     $('.interest_points').css('width', scaledImageWidth );
                   }
                 );
@@ -783,7 +787,7 @@ $(function start() {
                     console.log("ALERT");
                     console.log("ratio changed: "+ratio);
                 }, false);
-                
+
                 // go through all ip and add annotations and modal window
                 for (var i = 0; i < interestPoints.length; i++) {
                     ip = interestPoints[i]; var index=i;
