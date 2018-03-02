@@ -829,7 +829,12 @@ $(function start() {
             var rendered = '<a data-target="#pimod'+data.id+'" class="btn btn-info ipoint" role="button" id="pi'+data.id+'" style="left:'+data.acf.left+'; top:'+data.acf.top+';" data-left="'+data.acf.left+'" data-top="'+data.acf.top+'">'
                            + data.title.rendered
                            + '</a>';
-            $('.interest_points').append(rendered);
+            $.get('assets/templates/interest_points_annotation.mst', function(template) {
+                               console.log("ip data", data);
+                               var rendered2 = Mustache.render(template, data);
+                               $('.interest_points').append(rendered2);
+            });
+            //$('.interest_points').append(rendered);
             // TODO fonction particuliere qui ouvre la modale du point d'intérêt
             var content = '<div class="modal fade" id="pimod'+data.id+'" role="dialog">'+
                               '<div class="modal-dialog">'+

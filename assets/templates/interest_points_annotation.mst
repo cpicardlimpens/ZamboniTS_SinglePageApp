@@ -1,0 +1,9 @@
+<a data-target="#pimod{{ id }}"
+    class="btn btn-info ipoint"
+    role="button"
+    id="pi{{ id }}"
+    style="left:{{ acf.left }};top:{{ acf.top }};"
+    data-left="{{acf.left}}"
+    data-top="{{acf.top}}">{{ title.rendered }}
+
+</a>
