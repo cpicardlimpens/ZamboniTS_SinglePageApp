@@ -9,6 +9,16 @@ The development code for *Zamboni Touch Street* uses a single page application (
 
 ## Getting Started
 
+The all structure consists in a backend wordpress *http://zambonits.limpica.net/wp/* with a REST API and a front-end the website *Zamboni TouchStreet*.
+
+The Zamboni TouchStreet web-application is composed of:
+- one page presentation: brief introduction, credits, access to the *Zamboni Touch Street*;
+- one page map, with geolocation (google api) and pinned steps on the street;
+- for each street’s step, a panoramic view showing interest points; a button info for an introduction to the street’s step;
+- for each interest point, a pop up window with multimedia content (text, audio, images); all the content is extracted from the wordpress site and database access is made through REST API.
+
+
+
 <!--These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.--
 
 ### Prerequisites
