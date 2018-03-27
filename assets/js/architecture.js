@@ -793,7 +793,7 @@ $(function start() {
                     ip = interestPoints[i]; var index=i;
                     $.getJSON( API_BASE_URL+"posts/"+ip.ID, function( data ) {
                         //console.log(API_BASE_URL+"posts/"+ip.ID);
-                        console.log(ip.ID+" VS "+data.id);
+                        //console.log(ip.ID+" VS "+data.id);
                         $.each( data.acf, function(key,value  ) {
 
                             if(value==false) {
@@ -833,15 +833,59 @@ $(function start() {
                                console.log("ip data", data);
                                var rendered2 = Mustache.render(template, data);
                                $('.interest_points').append(rendered2);
+
+                               $.get('assets/templates/interest_points_content.mst', function(template) {
+
+                                   var content2 = Mustache.render(template, data);
+                                   $('#modal_ip').append(content2);
+
+                                   //var pi_ = 'pi'+data.id+'.ipoint';
+
+
+                                   var url = $('#pi'+data.id+' audio').attr('src');
+                                   $("#pi"+data.id).on('hide.bs.modal', function(){
+                                       //jQuery('#pi'+data.id+' audio').removeAttr("src", jQuery('#pi'+data.id+' audio').removeAttr("src"));
+                                       //$('#pi'+data.id+' audio').stop();
+
+                                       $('audio').each(function(){
+                                            this.pause(); // Stop playing
+                                            this.currentTime = 0; // Reset time
+                                        });
+                                   });
+
+                                   $("#pi"+data.id).on('show.bs.modal', function(){
+                                       $('#pi'+data.id+' audio').attr('src', url);
+                                   });
+
+                                   var pi_ = 'pi'+data.id+'.ipoint';
+                                   // dismiss when clicking outside the modal
+                                   $('.modal').on('click', function(e) {
+                                       if (!$(e.target).closest(".modal-content").length) {
+                                           $(".modal").fadeOut(175);
+                                           console.log("close audio!!");
+                                           $('audio').each(function(){
+                                                this.pause(); // Stop playing
+                                                this.currentTime = 0; // Reset time
+                                            });
+                                       }
+                                   });
+
+                                   $('#'+pi_).on('click touchstart', function() {
+                                       // render modal window
+                                       console.log('click!!!');
+                                       //$("#pimod"+data.id).modal();
+                                       var target = ($(this).attr('data-target'));
+                                       $(target).fadeIn(175);
+                                   });
+                               });
             });
             //$('.interest_points').append(rendered);
             // TODO fonction particuliere qui ouvre la modale du point d'intérêt
-            var content = '<div class="modal fade" id="pimod'+data.id+'" role="dialog">'+
+            /*var content = '<div class="modal fade" id="pimod'+data.id+'" role="dialog">'+
                               '<div class="modal-dialog">'+
                               '<div class="overlay-modal" style="z-index:104">'+
                                   '<div class="modal-content" style="height:85%;">'+
                                       '<div class="modal-header" style="border-bottom: 1px solid #e5e5e5 padding:2px;">'+
-                                        /*'<span class="close-modal" data-dismiss="modal">&times;</span>' +*/
                                         '<h3 class="modal-title">'+data.title.rendered+'</h3>'+
                                       '</div>'+
                                       '<div class="modal-body" style="color:white; padding:12px;">'+
@@ -866,7 +910,7 @@ $(function start() {
                                 '</div>'+
                                 '</div>'+
                             '</div>';
-            $('#modal_ip').append(content);
+            $('#modal_ip').append(content);*/
             var pi_ = 'pi'+data.id+'.ipoint';
             // dismiss when clicking outside the modal
             $('.modal').on('click', function(e) {
@@ -886,11 +930,7 @@ $(function start() {
 
             $("#pi"+data.id).on('show.bs.modal', function(){
                 $('#pi'+data.id+' audio').attr('src', url);
-                /*$(this).find('.modal-body').css({
-                    width:'auto', //probably not needed
-                    height:'auto', //probably not needed
-                    'max-height':'100%'
-       });*/
+
             });
 
 
@@ -899,7 +939,6 @@ $(function start() {
             $('#'+pi_).on('click touchstart', function() {
                 // render modal window
                 console.log('click!!!');
-                //$("#pimod"+data.id).modal();
                 var target = ($(this).attr('data-target'));
                 $(target).fadeIn(175);
             });
@@ -968,13 +1007,14 @@ $(function start() {
                                                 '<iframe id="videoContent" width="100%" height="100%" src="//www.youtube.com/embed/YE7VzlLtp-4" frameborder="0" allowfullscreen></iframe>' + //video could a feature!!
                                     '</div></div></div>')
 
-                var url = $('#myModal iframe').attr('src');
+                var url = $('#myModal iframe')[0].src;
                 //
                 //video:data.acf.video_introduttivo
 
                 $('#myModal').on('hide.bs.modal', function(){
                     //console.log('close modal dans fonction');
-                    jQuery('#myModal iframe').removeAttr("src", jQuery('#myModal iframe').removeAttr("src"));
+                    //jQuery('#myModal iframe').removeAttr("src", jQuery('#myModal iframe').removeAttr("src"));
+                    jQuery('#myModal iframe')[0].src="";
                     //window.location.hash = 'step/'+stepid;
                 });
 

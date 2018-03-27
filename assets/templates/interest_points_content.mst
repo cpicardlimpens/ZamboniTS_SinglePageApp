@@ -1,39 +1,40 @@
 <div class="modal fade" id="pimod{{ id }}" role="dialog">
     <div class="modal-dialog">
-        <div class="modal-content" style="background-color:rgba(255,255,255,0.2); top:100px">
-            <div class="modal-header" style="border-bottom: 0px solid #e5e5e5">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h3 class="modal-title">{{ title.rendered }}</h3>
-            </div>
-            <div class="modal-body">
-                <div class="p_modal">{{{acf.scheda_tecnica}}}</div>
-                <br>
-                <div class="p_modal">{{{acf.intro_t}}}</div>
-                <br>
-                {{#acf.desc_gnal_a}}
-                    <audio controls><source src="{{acf.desc_gnal_a.url}}" type="audio/wav"></audio>
-                {{/acf.desc_gnal_a}}
-                {{#acf.dentro_i1}}
-                    <div class="responsive-50"><div class="gallery"><a target="_blank" href="{{acf.dentro_i1.url}}"><img src="{{acf.dentro_i1.url}}" alt="" ></a></div></div>
-                {{/acf.dentro_i1}}
-                {{#acf.dentro_i2}}
-                    <div class="responsive-50"><div class="gallery"><a target="_blank" href="{{acf.dentro_i2.url}}"><img src="{{acf.dentro_i2.url}}" alt="" ></a></div></div>
-                {{/acf.dentro_i2}}
-                {{#acf.dentro_i3}}
-                    <div class="responsive-50"><div class="gallery"><a target="_blank" href="{{acf.dentro_i3.url}}"><img src="{{acf.dentro_i3.url}}" alt="" ></a></div></div>
-                {{/acf.dentro_i3}}
-                <div class="clearfix"></div>
-                <br>
-                <h4 class="modal-title">Esperienza</h4>
-                <div class="p_modal">{{{acf.esperienza_t}}}</div>
-                {{#acf.esperienza_a}}
-                    <audio controls><source src="{{acf.esperienza_a.url}}" type="audio/wav"></audio>
-                {{/acf.esperienza_a}}
-                {{#acf.esperienza_i}}
-                    <div class="responsive-100"><div class="gallery"><a target="_blank" href="{{acf.esperienza_i.url}}"><img src="{{acf.esperienza_i.url}}" alt="" ></a></div></div>
-                {{/acf.esperienza_i}}
-                <div class="clearfix"></div>
+        <div class="overlay-modal" style="z-index:104">
+            <div class="modal-content" style="height:85%;">
+                <div class="modal-header" style="border-bottom: 1px solid #e5e5e5 padding:2px;">
+                    <h3 class="modal-title">{{ title.rendered }}</h3>
+                </div>
+                <div class="modal-body" style="color:white; padding:12px;">
+                    <div class="p_modal">{{{acf.scheda_tecnica}}}</div>
+                    <br>
+                    <div class="p_modal">{{{acf.intro_t}}}</div>
+                    <br>
+                    {{#acf.desc_gnal_a}}
+                        <audio controls><source src="{{acf.desc_gnal_a.url}}" type="audio/wav"></audio>
+                    {{/acf.desc_gnal_a}}
+                    {{#acf.dentro_i1}}
+                        <div class="responsive-50"><div class="gallery"><a target="_blank" href="{{acf.dentro_i1.url}}"><img src="{{acf.dentro_i1.url}}" alt="" ></a></div></div>
+                    {{/acf.dentro_i1}}
+                    {{#acf.dentro_i2}}
+                        <div class="responsive-50"><div class="gallery"><a target="_blank" href="{{acf.dentro_i2.url}}"><img src="{{acf.dentro_i2.url}}" alt="" ></a></div></div>
+                    {{/acf.dentro_i2}}
+                    {{#acf.dentro_i3}}
+                        <div class="responsive-50"><div class="gallery"><a target="_blank" href="{{acf.dentro_i3.url}}"><img src="{{acf.dentro_i3.url}}" alt="" ></a></div></div>
+                    {{/acf.dentro_i3}}
+                    <div class="clearfix"></div>
+                    <br>
+                    <h4 class="modal-title">Esperienza</h4>
+                    <div class="p_modal">{{{acf.esperienza_t}}}</div>
+                    {{#acf.esperienza_a}}
+                        <audio controls><source src="{{acf.esperienza_a.url}}" type="audio/wav"></audio>
+                    {{/acf.esperienza_a}}
+                    {{#acf.esperienza_i}}
+                        <div class="responsive-100"><div class="gallery"><a target="_blank" href="{{acf.esperienza_i.url}}"><img src="{{acf.esperienza_i.url}}" alt="" ></a></div></div>
+                    {{/acf.esperienza_i}}
+                    <div class="clearfix"></div>
 
+                </div>
             </div>
         </div>
     </div>
