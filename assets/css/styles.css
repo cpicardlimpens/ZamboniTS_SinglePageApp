@@ -35,6 +35,12 @@ h1, h3{
 -----------------*/
  #map {
      height: 100%;
+	 position: fixed;
+	 overflow: hidden;
+	 top: 0;
+     right: 0;
+     bottom: 0;
+     left: 0;
  }
 
  .gm-style .gm-style-iw {
@@ -316,7 +322,7 @@ pour s'assurer que l'ensemble du contenu est lisible pr les pts d'intérêts hei
 
 	position:absolute;
 	pointer-events: none;
-	background-color: White;
+	background-color: Black; //is seen when loading the panorama page
 
 }
 

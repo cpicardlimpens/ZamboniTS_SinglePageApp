@@ -10,7 +10,7 @@ $(function start() {
             lat: 0,
             lng: 0
     };
-    // HERE automatic get from wordpress
+    // Automatic get from wordpress
     var features = [];
     var API_BASE_URL = "http://zambonits.limpica.net/wp/wp-json/wp/v2/"
 
@@ -33,46 +33,6 @@ $(function start() {
 
 	});
 
-    // Info for each pano
-    //var infoPanoPage = $('.btn-info');
-    /*if ($('#modal_i').hasClass('visible')) {
-
-        var stepid = window.location.href.split('#stepinfo/')[1].trim();
-        console.log("///stepid",stepid);
-        $('button.close-modal').on('click', function (e) {
-            console.log("close infoPage");
-            window.location.hash = 'step/'+stepid;
-        });
-    }*/
-
-    /*$('#myModal').on('hide.bs.modal', function(){
-        console.log('close modal ');
-        jQuery('#myModal iframe').removeAttr("src", jQuery('#myModal iframe').removeAttr("src"));
-        var stepid = window.location.href.split('#stepinfo/')[1].trim();
-        window.location.hash = 'step/'+stepid;
-    });*/
-
-/*
-    infoPanoPage.on('click', function (e) {
-
-        if (infoPanoPage.hasClass('visible')) {
-
-            var clicked = $(e.target);
-            var stepid = window.location.href.split('#stepinfo/')[1].trim();
-            console.log("///stepid",stepid);
-
-            // If the close button or the background are clicked go to the previous page.
-            if (clicked.hasClass('close-modal') || clicked.hasClass('overlay')) {
-                // Change the url hash
-                //window.location.hash = '';
-                console.log("close infoPage");
-                window.location.hash = 'step/'+stepid;
-            }
-
-        }
-
-    });*/
-
     var panoPage = $('.pano');
 	panoPage.on('click', function (e) {
 
@@ -90,11 +50,6 @@ $(function start() {
 
 	});
 
-    /*$('.step_marker').click(function () {
-        // collect step id from clicked element
-        // change location hash using step id
-        window.location.hash = '#step/' + stepid
-    });*/
 
 
     // NB: Here it's a bit tricky as the google map has to be created before we inject the steps markers in it, so maybe the nesting of callbacks is different from the following
@@ -127,9 +82,8 @@ $(function start() {
             generateStepsMarkers(feature);
         }
 
-        /*markers_list[current_count].setAnimation(google.maps.Animation.BOUNCE);*/
 
-        // geoloc
+        // Geolocation
         var infoWindow_ = new google.maps.InfoWindow({
             map: map,
             maxWidth: 250
@@ -177,26 +131,20 @@ $(function start() {
 
 
             },
-             function( error ){
-                                    console.log( "Something went wrong: ", error );
-                            },
-                            {
-                                    timeout: (10 * 1000),
-                                    maximumAge: (1000 * 60 * 15),
-                                    enableHighAccuracy: true
-                            }
-            );
+            function( error ){
+                console.log( "Something went wrong: ", error );
+            },
+            {
+                timeout: (10 * 1000),
+                maximumAge: (1000 * 60 * 15),
+                enableHighAccuracy: true
+            }
+        );
         }
 
     });
 
-    /*$.getJSON("path/to/list/of/step/objects", function( data ) {
-        // Get data about our products from the listing of all steps
-        // Call a function that will turn that data into HTML.
-        generateStepsMarkers(data);
-        injectStepMarkersInMap(); //TBD
-        renderMapPage();
-    });*/
+
 
     function injectStepMarkersInMap(marker) {
         marker.addListener('click', function() {
@@ -284,14 +232,7 @@ $(function start() {
                 //renderStepPanoramaPage(stepid);
                 renderStepInfoPanoramaPage(stepid);
             },
-            // Step interest point page.
-            /*'#stepinterestpoint': function() {
-                // Get the index of which step we want to show and call the appropriate function.
-                //var stepid = (url.split('#stepinterestpoint/')[1]).split('_')[0].trim();
-                var pointid = url.split('#stepinterestpoint/')[1].trim();
-                //renderStepPanoramaPage(stepid);
-                renderStepInterestPointPanoramaPage(pointid);
-            },*/
+
             // Step panorama page.
             '#step': function() {
                 // Get the index of which step we want to show and call the appropriate function.
@@ -309,6 +250,9 @@ $(function start() {
         }
     }
 
+    ///////////////////////////////////////////////////////////////////////////////////
+    // MAP PAGE
+    ///////////////////////////////////////////////////////////////////////////////////
     function renderMapPage() {
         // shows the main map page
         // OPTIONAL : take list of visited steps in input and alter the corresponding marker (color, shape, etc.)
@@ -552,6 +496,7 @@ $(function start() {
             ]
         });
 
+
         google.maps.event.addDomListener(window, "resize", function() {
             var center = map.getCenter();
             google.maps.event.trigger(map, "resize");
@@ -560,144 +505,155 @@ $(function start() {
 
         // MAsk to focus on Zamboni street
         // Define the LatLng coordinates for the polygon's path.
-        var outerCoords = [{
-                lat: 44.49926027609643,
-                lng: 11.327075958251953
-            },
-            {
-                lat: 44.505749187681566,
-                lng: 11.339521408081055
-            },
-            {
-                lat: 44.50109683378502,
-                lng: 11.356086730957031
-            },
-            {
-                lat: 44.485667951204974,
-                lng: 11.358060836791992
-            },
-            {
-                lat: 44.48646398548003,
-                lng: 11.339263916015625
-            },
-            {
-                lat: 44.49044399391039,
-                lng: 11.328964233398438
-            }
+        var outerCoords = [
+            {lat: 44.4,lng: 11.3},
+            {lat: 44.6,lng: 11.3},
+            {lat: 44.6,lng: 11.4},
+            {lat: 44.4,lng: 11.4},
         ];
 
         // Define the LatLng coordinates for the polygon's inner path.
         // Note that the points forming the inner path are wound in the
         // opposite direction to those in the outer path, to form the hole.
-        var innerCoords = [{
-                lat: 44.49428597518099,
-                lng: 11.346087455749512
-            },
-            {
-                lat: 44.49440842460528,
-                lng: 11.347653865814209
-            },
-            {
-                lat: 44.49489821973133,
-                lng: 11.348834037780762
-            },
-            {
-                lat: 44.4954492343308,
-                lng: 11.350829601287842
-            },
-            {
-                lat: 44.49626044079391,
-                lng: 11.352524757385254
-            },
-            {
-                lat: 44.49675022036458,
-                lng: 11.354176998138428
-            },
-            {
-                lat: 44.49740835518457,
-                lng: 11.356065273284912
-            },
-            {
-                lat: 44.49838789092852,
-                lng: 11.356322765350342
-            },
-            {
-                lat: 44.49881643264208,
-                lng: 11.354155540466309
-            },
-            {
-                lat: 44.49806648257639,
-                lng: 11.352567672729492
-            },
-            {
-                lat: 44.49728591205956,
-                lng: 11.351323127746582
-            },
-            {
-                lat: 44.49673491481525,
-                lng: 11.349992752075195
-            },
-            {
-                lat: 44.496382886072254,
-                lng: 11.348190307617188
-            },
-            {
-                lat: 44.49567882221063,
-                lng: 11.3468599319458
-            },
-            {
-                lat: 44.49514311575167,
-                lng: 11.345744132995605
-            },
-            {
-                lat: 44.494454343073116,
-                lng: 11.345658302307129
-            }
+        var innerCoords = [
+            {lat: 44.49428597518099, lng: 11.346087455749512},
+            {lat: 44.49440842460528,lng: 11.347653865814209},
+            {lat: 44.49489821973133,lng: 11.348834037780762},
+            {lat: 44.4954492343308,lng: 11.350829601287842},
+            {lat: 44.49626044079391,lng: 11.352524757385254},
+            {lat: 44.49675022036458,lng: 11.354176998138428},
+            {lat: 44.49740835518457,lng: 11.356065273284912},
+            {lat: 44.49838789092852,lng: 11.356322765350342},
+            {lat: 44.49881643264208,lng: 11.354155540466309},
+            {lat: 44.49806648257639,lng: 11.352567672729492},
+            {lat: 44.49728591205956,lng: 11.351323127746582},
+            {lat: 44.49673491481525,lng: 11.349992752075195},
+            {lat: 44.496382886072254,lng: 11.348190307617188},
+            {lat: 44.49567882221063,lng: 11.3468599319458},
+            {lat: 44.49514311575167,lng: 11.345744132995605},
+            {lat: 44.494454343073116,lng: 11.345658302307129}
         ];
 
 
         // Construct the polygon.
         var zone = new google.maps.Polygon({
-            paths: [outerCoords, innerCoords],
+            paths: [innerCoords, outerCoords],
             strokeColor: '#FFFFFF',
             strokeOpacity: 0.8,
-            strokeWeight: 1,
+            strokeWeight: 2,
             fillColor: '#FFFFFF',
-            fillOpacity: 0.65
+            fillOpacity: 0.55
         });
         zone.setMap(map);
 
         // Create the DIV to hold the control
         var centerControlDiv = document.createElement('div');
 
-
         centerControlDiv.index = 1;
         map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv);
-
+        //////PB: map is sliding!!!
+        $('#map').css("position", "fixed");
     }
 
-    function renderStepPanoramaPage(stepid){
-        // Shows the step panorama Page with appropriate id.
-        // grab data from backend
+
+    ///////////////////////////////////////////////////////////////////////////////////
+    // STEP PANORAMA PAGE
+    ///////////////////////////////////////////////////////////////////////////////////
+    function renderStepPanoramaPage(step_id){
+
+        // Grab data from backend
         var page = $('.pano'),
 			container = $('.viewPano');
         // Info for each pano
         var infoPanoPage = $('.btn-info');
-        // Empty the interest points each time we go to another StepPanoramaPage, empty attribute to width
+        // Empty the interest points each time we go to another StepPanoramaPage, empty attribute for width
         $('.interest_points').empty();
         $('.modal_i').empty();
         $('div.viewPano').css('width','');
-        // show stepinfo on click
+        // Show stepinfo on click
         infoPanoPage.on('click', function (e) {
-    		window.location.hash = '#stepinfo/'+stepid;
-            //infoPanoPage.addClass('visible');
+    		window.location.hash = '#stepinfo/'+step_id;
     	});
 
-        // FIXME: put l696 to l737 in a function
+        // Render the navigation steps, on top right
+        renderNavigationSteps(step_id);
+
+        $.getJSON( API_BASE_URL+"listings/"+step_id, function( data ) {
+            //console.log("got listing details", data);
+            var interestPoints = data.acf.pint;
+            var $loadingIndicator = $('#loading-indicator');
+            $('.interest_points').css('opacity',0.0);
+            $("#steps_nav" ).css('opacity',0.0);
+            infoPanoPage.css('opacity',0.0);
+            // Loader indicator
+            $loadingIndicator.show();
+            // Call pano.js
+            $("#panorama").pano({
+                img: data.acf.panoramica.url
+            });
+            // tracking of the loading process
+            $('#panorama').imagesLoaded({
+                background: true
+            }, function( imgLoad ) {
+                console.log( ' image loaded!!' );
+                $loadingIndicator.hide();
+                $('.interest_points').css('opacity',1.0);
+                $("#steps_nav" ).css('opacity',1.0);
+                infoPanoPage.css('opacity',1.0);
+                $('.interest_points').css('width', scaledImageWidth );
+            }
+        );
+
+
+        var ratio = parseInt($('#panorama').css("height").replace("px", ""))*1.0/data.acf.panoramica.height;
+        console.log("ratio "+ratio);
+        var scaledImageWidth = data.acf.panoramica.width * ratio;
+        console.log("background-position: "+ $('#panorama').css("background-position"));
+        // BE sure that when switching from map to panorama the interest points remain well located
+        if($('#panorama').css("background-position")!=0) $('#panorama').css('background-position',0);
+
+        // Listen for resize changes (landscape to portrait and vice versa)
+        window.addEventListener("resize", function() {
+            // Get screen size (inner/outerWidth, inner/outerHeight)
+            ratio = parseInt($('#panorama').css("height").replace("px", ""))*1.0/data.acf.panoramica.height;
+            scaledImageWidth = data.acf.panoramica.width * ratio;
+            var delta = parseInt($('#panorama').css('background-position-x').replace("px", ""));
+            console.log(delta);
+            $('.interest_points').css('width', scaledImageWidth);
+            $(panorama).find(".ipoint").each(function(index, ip){
+                current_left = parseInt($(ip).attr('data-left').replace("%", ""))*scaledImageWidth/100;
+                console.log("cur-left " + current_left);
+                $(ip).css('left', current_left +delta +'px');
+            })
+            console.log("ALERT");
+            console.log("ratio changed: "+ratio);
+        }, false);
+
+        // go through all ip and add annotations and modal window
+        for (var i = 0; i < interestPoints.length; i++) {
+            ip = interestPoints[i]; var index=i;
+            $.getJSON( API_BASE_URL+"posts/"+ip.ID, function( data ) {
+
+                renderStepInterestPointPanoramaPage(data.id);
+
+            });
+        };
+
+    });
+
+		// Show the page.
+		page.addClass('visible');
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////
+    // INSIDE PANORAMA, RENDER THE NAVIGATION STEPS ON TOP RIGHT
+    ///////////////////////////////////////////////////////////////////////////////////
+    function renderNavigationSteps(step_id){
+
         var steps = list_steps.split('_');
         var p; var n; var s;
         for (var i=0; i< steps.length-1; i++) {
-            if(stepid==steps[i]){
+            if(step_id==steps[i]){
                 s=i+1;
                 if(i==0) {
                     p=" ";
@@ -715,7 +671,7 @@ $(function start() {
 
             }
         }
-        // FIXME : more compact?? => use a mustache template
+
         var new_content1 = "";
         if(p==" "){
             new_content1 += '    '
@@ -736,313 +692,104 @@ $(function start() {
                         + '</a>';
         }
         $("#steps_nav" ).html(new_content1);
-
-        $.getJSON( API_BASE_URL+"listings/"+stepid, function( data ) {
-                //console.log("got listing details", data);
-                var interestPoints = data.acf.pint;
-                var $loadingIndicator = $('#loading-indicator');
-                $('.interest_points').css('opacity',0.0);
-                $("#steps_nav" ).css('opacity',0.0);
-                infoPanoPage.css('opacity',0.0);
-                // Loader indicator
-                $loadingIndicator.show();
-                // appel à pano.js
-                $("#panorama").pano({
-                    img: data.acf.panoramica.url
-                });
-                // tracking of the loading process
-                $('#panorama').imagesLoaded({
-                    background: true
-                  }, function( imgLoad ) {
-                    console.log( ' image loaded!!' );
-                    $loadingIndicator.hide();
-                    $('.interest_points').css('opacity',1.0);
-                    $("#steps_nav" ).css('opacity',1.0);
-                    infoPanoPage.css('opacity',1.0);
-                    $('.interest_points').css('width', scaledImageWidth );
-                  }
-                );
-
-
-                var ratio = parseInt($('#panorama').css("height").replace("px", ""))*1.0/data.acf.panoramica.height;
-                console.log("ratio "+ratio);
-                var scaledImageWidth = data.acf.panoramica.width * ratio;
-                console.log("background-position: "+ $('#panorama').css("background-position"));
-                // BE sure that when switching from map to panorama the interest points remain well located
-                if($('#panorama').css("background-position")!=0) $('#panorama').css('background-position',0);
-
-                // Listen for resize changes (landscape to portrait and vice versa)
-                window.addEventListener("resize", function() {
-                	// Get screen size (inner/outerWidth, inner/outerHeight)
-                    ratio = parseInt($('#panorama').css("height").replace("px", ""))*1.0/data.acf.panoramica.height;
-                    scaledImageWidth = data.acf.panoramica.width * ratio;
-                    var delta = parseInt($('#panorama').css('background-position-x').replace("px", ""));
-                    console.log(delta);
-                    $('.interest_points').css('width', scaledImageWidth);
-                    $(panorama).find(".ipoint").each(function(index, ip){
-                        current_left = parseInt($(ip).attr('data-left').replace("%", ""))*scaledImageWidth/100;
-                        console.log("cur-left " + current_left);
-                        $(ip).css('left', current_left +delta +'px');
-                    })
-                    console.log("ALERT");
-                    console.log("ratio changed: "+ratio);
-                }, false);
-
-                // go through all ip and add annotations and modal window
-                for (var i = 0; i < interestPoints.length; i++) {
-                    ip = interestPoints[i]; var index=i;
-                    $.getJSON( API_BASE_URL+"posts/"+ip.ID, function( data ) {
-                        //console.log(API_BASE_URL+"posts/"+ip.ID);
-                        //console.log(ip.ID+" VS "+data.id);
-                        $.each( data.acf, function(key,value  ) {
-
-                            if(value==false) {
-                                //console.log(ip.ID+" - empty category:"+key+"/ value: "+value);
-                            }
-
-                        });
-                        // append interest points annotations with handlebars (instead of Mustache)
-                        //console.log("ip data", data);
-                        //console.log(data.title.rendered);
-                        // TODO href de la modal du point d'intérêt
-                        /*var rendered = '<a data-target="#pimod'+data.id+'" class="btn btn-info ipoint" role="button" id="pi'+data.id+'" style="left:'+data.acf.left+'; top:'+data.acf.top+';" data-left="'+data.acf.left+'" data-top="'+data.acf.top+'">'
-                                       + data.title.rendered
-                                       + '</a>';
-                        $('.interest_points').append(rendered);*/
-                        renderStepInterestPointPanoramaPage(data.id);
-
-
-                    });
-                };
-
-        });
-
-
-		// Show the page.
-		page.addClass('visible');
     }
-    // modal for interest point
+
+    ///////////////////////////////////////////////////////////////////////////////////
+    // INSIDE PANORAMA, MODAL WINDOW FOR INTEREST POINT
+    ///////////////////////////////////////////////////////////////////////////////////
     function renderStepInterestPointPanoramaPage(pointid){
 
         $.getJSON( API_BASE_URL+"posts/"+pointid, function( data ) {
 
-            var rendered = '<a data-target="#pimod'+data.id+'" class="btn btn-info ipoint" role="button" id="pi'+data.id+'" style="left:'+data.acf.left+'; top:'+data.acf.top+';" data-left="'+data.acf.left+'" data-top="'+data.acf.top+'">'
-                           + data.title.rendered
-                           + '</a>';
             $.get('assets/templates/interest_points_annotation.mst', function(template) {
-                               console.log("ip data", data);
-                               var rendered2 = Mustache.render(template, data);
-                               $('.interest_points').append(rendered2);
-
-                               $.get('assets/templates/interest_points_content.mst', function(template) {
-
-                                   var content2 = Mustache.render(template, data);
-                                   $('#modal_ip').append(content2);
-
-                                   //var pi_ = 'pi'+data.id+'.ipoint';
-
-
-                                   var url = $('#pi'+data.id+' audio').attr('src');
-                                   $("#pi"+data.id).on('hide.bs.modal', function(){
-                                       //jQuery('#pi'+data.id+' audio').removeAttr("src", jQuery('#pi'+data.id+' audio').removeAttr("src"));
-                                       //$('#pi'+data.id+' audio').stop();
-
-                                       $('audio').each(function(){
-                                            this.pause(); // Stop playing
-                                            this.currentTime = 0; // Reset time
-                                        });
-                                   });
-
-                                   $("#pi"+data.id).on('show.bs.modal', function(){
-                                       $('#pi'+data.id+' audio').attr('src', url);
-                                   });
-
-                                   var pi_ = 'pi'+data.id+'.ipoint';
-                                   // dismiss when clicking outside the modal
-                                   $('.modal').on('click', function(e) {
-                                       if (!$(e.target).closest(".modal-content").length) {
-                                           $(".modal").fadeOut(175);
-                                           console.log("close audio!!");
-                                           $('audio').each(function(){
-                                                this.pause(); // Stop playing
-                                                this.currentTime = 0; // Reset time
-                                            });
-                                       }
-                                   });
-
-                                   $('#'+pi_).on('click touchstart', function() {
-                                       // render modal window
-                                       console.log('click!!!');
-                                       //$("#pimod"+data.id).modal();
-                                       var target = ($(this).attr('data-target'));
-                                       $(target).fadeIn(175);
-                                   });
-                               });
-            });
-            //$('.interest_points').append(rendered);
-            // TODO fonction particuliere qui ouvre la modale du point d'intérêt
-            /*var content = '<div class="modal fade" id="pimod'+data.id+'" role="dialog">'+
-                              '<div class="modal-dialog">'+
-                              '<div class="overlay-modal" style="z-index:104">'+
-                                  '<div class="modal-content" style="height:85%;">'+
-                                      '<div class="modal-header" style="border-bottom: 1px solid #e5e5e5 padding:2px;">'+
-                                        '<h3 class="modal-title">'+data.title.rendered+'</h3>'+
-                                      '</div>'+
-                                      '<div class="modal-body" style="color:white; padding:12px;">'+
-                                            '<div class="p_modal">'+data.acf.scheda_tecnica+'</div>'+
-                                            '<br>'+
-                                            '<div class="p_modal">'+data.acf.intro_t+'</div>'+
-                                            '<br>'+
-                                            ( typeof data.acf.desc_gnal_a.url  !== "undefined" ? '<audio controls><source src="'+data.acf.desc_gnal_a.url+'" type="audio/wav"></audio>': '' )+
-                                            '<br>'+
-                                            ( typeof data.acf.dentro_i1.url  !== "undefined" ? '<div class="responsive-100"><div class="gallery"><a target="_blank" href="'+data.acf.dentro_i1.url+'" style="background-color: transparent; padding:0px;"><img src="'+data.acf.dentro_i1.url+'" alt="" ></a></div></div>': '' )+
-                                            ( typeof data.acf.dentro_i2.url  !== "undefined" ? '<div class="responsive-100"><div class="gallery"><a target="_blank" href="'+data.acf.dentro_i2.url+'" style="background-color: transparent; padding:0px;"><img src="'+data.acf.dentro_i2.url+'" alt="" ></a></div></div>': '' )+
-                                            ( typeof data.acf.dentro_i3.url  !== "undefined" ? '<div class="responsive-100"><div class="gallery"><a target="_blank" href="'+data.acf.dentro_i3.url+'" style="background-color: transparent; padding:0px;"><img src="'+data.acf.dentro_i3.url+'" alt="" ></a></div></div>': '' )+
-                                            '<div class="clearfix"></div>'+
-                                            '<br>'+
-                                            '<h4 class="modal-title">Esperienza</h4>'+
-                                            '<div class="p_modal">'+data.acf.esperienza_t+'</div>'+
-                                            ( typeof data.acf.esperienza_a.url  !== "undefined" ? '<audio controls><source src="'+data.acf.esperienza_a.url+'" type="audio/wav"></audio>': '' )+
-                                            ( typeof data.acf.esperienza_i.url  !== "undefined" ? '<div class="responsive-100"><div class="gallery"><a target="_blank" href="'+data.acf.esperienza_i.url+'" style="background-color: transparent;"><img src="'+data.acf.esperienza_i.url+'" alt="" ></a></div></div>': '' )+
-                                            '<div class="clearfix"></div>'+
-                                        '</div>'+
-                                    '</div>'+
-                                '</div>'+
-                                '</div>'+
-                            '</div>';
-            $('#modal_ip').append(content);*/
-            var pi_ = 'pi'+data.id+'.ipoint';
-            // dismiss when clicking outside the modal
-            $('.modal').on('click', function(e) {
-                if (!$(e.target).closest(".modal-content").length) {
-                    $(".modal").fadeOut(175);
-                }
-            });
-
-            $(".modal").click(function(e) {
-                e.stopPropagation();
-            });
-
-            $("#pi"+data.id).on('hide.bs.modal', function(){
-                jQuery('#pi'+data.id+' audio').removeAttr("src", jQuery('#pi'+data.id+' audio').removeAttr("src"));
-                $('.modal_ip').empty();
-            });
-
-            $("#pi"+data.id).on('show.bs.modal', function(){
-                $('#pi'+data.id+' audio').attr('src', url);
-
-            });
-
-
-
-
-            $('#'+pi_).on('click touchstart', function() {
-                // render modal window
-                console.log('click!!!');
-                var target = ($(this).attr('data-target'));
-                $(target).fadeIn(175);
-            });
-
-            /*$.get('assets/templates/interest_points_annotation.mst', function(template) {
                 console.log("ip data", data);
-
                 var rendered = Mustache.render(template, data);
                 $('.interest_points').append(rendered);
 
-                //todo: comment faire si le champ acf est vide??
-                $.get('templates/interest_points_content.mst', function(template) {
+                $.get('assets/templates/interest_points_content.mst', function(template) {
 
                     var content = Mustache.render(template, data);
                     $('#modal_ip').append(content);
 
-                    var url = $('#pi'+data.id+' audio').attr('src');
-                    $("#pi"+data.id).on('hide.bs.modal', function(){
-                        jQuery('#pi'+data.id+' audio').removeAttr("src", jQuery('#pi'+data.id+' audio').removeAttr("src"));
-                    });
-
-                    $("#pi"+data.id).on('show.bs.modal', function(){
-                        $('#pi'+data.id+' audio').attr('src', url);
+                    // Dismiss when clicking outside the modal window
+                    $('.modal').on('click', function(e) {
+                        if (!$(e.target).closest(".modal-content").length) {
+                            $(".modal").fadeOut(175);
+                            console.log("close audio!!");
+                            $('audio').each(function(){
+                                this.pause(); // Stop playing
+                                this.currentTime = 0; // Reset time
+                            });
+                        }
                     });
 
                     var pi_ = 'pi'+data.id+'.ipoint';
-
                     $('#'+pi_).on('click touchstart', function() {
                         // render modal window
                         console.log('click!!!');
-                        $("#pimod"+data.id).modal();
+                        var target = ($(this).attr('data-target'));
+                        $(target).fadeIn(175);
                     });
                 });
-
-
-            });*/
-            var contents = data.acf;
-            //console.log("got interest point details", contents);
-            for (var j=0; j< contents.length-1; j++) {
-                //console.log(j+" "+contents[j]);
-            }
-
-
+            });
 
         });
 
     }
 
-    // Intro for panorama
-    function renderStepInfoPanoramaPage(stepid){
+    ///////////////////////////////////////////////////////////////////////////////////
+    // INSIDE PANORAMA, INTRO FOR PANORAMA
+    ///////////////////////////////////////////////////////////////////////////////////
+    function renderStepInfoPanoramaPage(step_id){
 
         var container_header = $('.modal-header'),
 			container_body = $('.modal-body');
-        $.getJSON( API_BASE_URL+"listings/"+stepid, function( data ) {
-                console.log("info for pano", stepid);
+        $.getJSON( API_BASE_URL+"listings/"+step_id, function( data ) {
+            console.log("info for pano", step_id);
 
-                /*container_header.find('h4').text(data.title.rendered);
-                container_body.find('iframe').attr('src',"//www.youtube.com/embed/YE7VzlLtp-4");*/
-                /*style="background-color:rgba(255,255,255,0.3); top:20%;left: 10%;position: fixed;width: 80%;height: 66%;z-index: 202; border-radius: 6px;">' +
-                    '<div class="modal-header" style="border-bottom: 0px solid #e5e5e5"*/
-                $('#myModal').html('<div class="modal-dialog">' +
-                                        '<div class="modal-content">' +
-                                                '<span class="close-modal" data-dismiss="modal">&times;</span>' +
-                                                '<h3>'+data.title.rendered+'</h3>' +
-                                            '<div class="modal-body">' +
-                                                '<iframe id="videoContent" width="100%" height="100%" src="//www.youtube.com/embed/YE7VzlLtp-4" frameborder="0" allowfullscreen></iframe>' + //video could a feature!!
-                                    '</div></div></div>')
+            // Here a random video has been set, should be replaced by the adequate one got from REST API
+            $('#myModal').html('<div class="modal-dialog">' +
+            '<div class="modal-content">' +
+            '<span class="close-modal" data-dismiss="modal">&times;</span>' +
+            '<h3>'+data.title.rendered+'</h3>' +
+            '<div class="modal-body">' +
+            '<iframe id="videoContent" width="100%" height="100%" src="//www.youtube.com/embed/YE7VzlLtp-4" frameborder="0" allowfullscreen></iframe>' + //video could a feature!!
+            '</div></div></div>')
 
-                var url = $('#myModal iframe')[0].src;
-                //
-                //video:data.acf.video_introduttivo
+            var url = $('#myModal iframe')[0].src;
 
-                $('#myModal').on('hide.bs.modal', function(){
-                    //console.log('close modal dans fonction');
-                    //jQuery('#myModal iframe').removeAttr("src", jQuery('#myModal iframe').removeAttr("src"));
-                    jQuery('#myModal iframe')[0].src="";
-                    //window.location.hash = 'step/'+stepid;
-                });
+            // When modal window is closed, video and audio are stopped
+            $('#myModal').on('hide.bs.modal', function(){
+                jQuery('#myModal iframe')[0].src="";
+            });
 
-                $('#myModal').on('show.bs.modal', function(){
-                    $('#myModal iframe').attr('src', url);
-                    window.location.hash = 'stepinfo/'+stepid;
-                });
+            $('#myModal').on('show.bs.modal', function(){
+                $('#myModal iframe').attr('src', url);
+                window.location.hash = 'stepinfo/'+step_id;
+            });
 
         });
 
-
-
     }
 
-    // Page Information
+    ///////////////////////////////////////////////////////////////////////////////////
+    // PAGE INFORMATION
+    ///////////////////////////////////////////////////////////////////////////////////
 	function renderInfoPage(){
 		var page = $('.info'),
 			container = $('.viewInfo');
 
+        // HERE a random audio content has been set, should be replace with adequate audio got from REST API
 		container.find('h3').text("Zamboni Touch Street: Un percorso in 7 Tappe");
-		//container.find('img').attr('src', 'assets/images/casa-isolani-residenze-di-epoca-bologna-vista-camera-abbado-580.jpg');
 		container.find('audio').attr('src', 'assets/sounds/Event2.wav');
-		//container.find('p').text("Il progetto nasce nell’ambito delle recenti iniziative dedicate a via Zamboni, uno dei fulcri principali dell’identità e della vita bolognese, proponendo un percorso di riscoperta dei molteplici aspetti che la connotano attraverso l’utilizzo della multimedialità per offrire un’esperienza interattiva con la strada, caratterizzata dal coinvolgimento multisensoriale.");
 
 		// Show the page.
 		page.addClass('visible');
 	}
 
+    ///////////////////////////////////////////////////////////////////////////////////
+    // ERROR PAGE
+    ///////////////////////////////////////////////////////////////////////////////////
     function renderErrorPage(){
         // Shows the error page.
     }

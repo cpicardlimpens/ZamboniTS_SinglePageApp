@@ -15,7 +15,7 @@ The Zamboni TouchStreet web-application is composed of:
 - one page presentation: brief introduction, credits, access to the *Zamboni Touch Street*;
 - one page map, with geolocation (google api) and pinned steps on the street;
 - for each street’s step, a panoramic view showing interest points; a button info for an introduction to the street’s step;
-- for each interest point, a pop up window with multimedia content (text, audio, images); all the content is extracted from the wordpress site and database access is made through REST API.
+- for each interest point, a pop up window with multimedia content (text, audio, images); all the content is extracted from the wordpress site and database access is made through REST API. (closing the pop up window is made by clicking outside the window)
 
 
 
