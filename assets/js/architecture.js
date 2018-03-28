@@ -128,6 +128,9 @@ $(function start() {
                 } else {
                     console.log("no update position");
                 }
+                // To avoid sliding map!!!
+                $('#map').css("position", "fixed");
+                $('#map').css("width", "100%");
 
 
             },
@@ -551,8 +554,8 @@ $(function start() {
 
         centerControlDiv.index = 1;
         map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv);
-        //////PB: map is sliding!!!
-        $('#map').css("position", "fixed");
+
+
     }
 
 
