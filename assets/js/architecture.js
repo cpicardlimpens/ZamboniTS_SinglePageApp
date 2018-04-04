@@ -12,7 +12,7 @@ $(function start() {
     };
     // Automatic get from wordpress
     var features = [];
-    var API_BASE_URL = "http://zambonits.limpica.net/wp/wp-json/wp/v2/" //https for online
+    var API_BASE_URL = "https://zambonits.limpica.net/wp/wp-json/wp/v2/" //https for online
 
     // General info about Zamboni Touch Street
     var infoPage = $('.info');

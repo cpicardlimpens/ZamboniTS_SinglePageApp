@@ -11,7 +11,7 @@
                     <div class="p_modal">{{{acf.intro_t}}}</div>
                     <br>
                     {{#acf.desc_gnal_a}}
-                        <audio controls><source src="{{acf.desc_gnal_a.url}}" type="audio/wav"></audio>
+                        <audio controls=""><source src="{{acf.desc_gnal_a.url}}" type="audio/wav"></audio>
                     {{/acf.desc_gnal_a}}
                     {{#acf.dentro_i1}}
                         <div class="responsive-50"><div class="gallery"><a target="_blank" href="{{acf.dentro_i1.url}}"><img src="{{acf.dentro_i1.url}}" alt="" ></a></div></div>
@@ -27,7 +27,7 @@
                     <h4 class="modal-title">Esperienza</h4>
                     <div class="p_modal">{{{acf.esperienza_t}}}</div>
                     {{#acf.esperienza_a}}
-                        <audio controls><source src="{{acf.esperienza_a.url}}" type="audio/wav"></audio>
+                        <audio controls=""><source src="{{acf.esperienza_a.url}}" type="audio/wav"></audio>
                     {{/acf.esperienza_a}}
                     {{#acf.esperienza_i}}
                         <div class="responsive-100"><div class="gallery"><a target="_blank" href="{{acf.esperienza_i.url}}"><img src="{{acf.esperienza_i.url}}" alt="" ></a></div></div>
