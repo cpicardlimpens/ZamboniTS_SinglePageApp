@@ -17,6 +17,29 @@ The Zamboni TouchStreet web-application is composed of:
 - for each street’s step, a panoramic view showing interest points; a button info for an introduction to the street’s step;
 - for each interest point, a pop up window with multimedia content (text, audio, images); all the content is extracted from the wordpress site and database access is made through REST API. (closing the pop up window is made by clicking outside the window)
 
+## How to deploy
+
+### Installing the backend:
+
+1. Download the backend wordpress code [here]()
+2. copy it to a Php web server folder with the following requirements:
+    - PHP Version 7.0.27
+    - MySQL server 5.1.73 
+3. download the dump of the database from [here]()
+4. load the dump into the database server of your host provider. For example see the procedure using PHPMyadmin [here]()
+5. configure your hosting solution to use and force the use of HTTPS.
+6. Make sure the backend is working well. If https://BACKENDURL is the base URL of your installationm, visit http://BACKENDURL/xxxx. You should see xxxxxxx
+
+### Installing the front-end
+
+1. Download locally the code from this repository by cloning it or clicking [here](xxx)
+2. Modify the variable YYYYY with the file YYY.js setting it to the value ....
+3. upload the code to your host provider. To ensure the use of HTTPS, we provide a .htaccess file usable with a classic Apache Web server; make sure to upload it as well. If you use a different domain or provider than for the backend, enable HTTPS.
+4. test the application by visiting https://YOURFRONTENTURL/index.html
+
+
+
+
 
 
 <!--These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.--
