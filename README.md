@@ -24,11 +24,11 @@ The Zamboni TouchStreet web-application is composed of:
 1. Download the backend wordpress code [here]()
 2. copy it to a Php web server folder with the following requirements:
     - PHP Version 7.0.27
-    - MySQL server 5.1.73 
+    - MySQL server 5.1.73
 3. download the dump of the database from [here]()
-4. load the dump into the database server of your host provider. For example see the procedure using PHPMyadmin [here]()
+4. load the dump into the database server of your host provider. For example see the procedure using [PHPMyadmin](https://codex.wordpress.org/phpMyAdmin) [https://docs.phpmyadmin.net/en/latest/import_export.html](https://docs.phpmyadmin.net/en/latest/import_export.html)
 5. configure your hosting solution to use and force the use of HTTPS.
-6. Make sure the backend is working well. If https://BACKENDURL is the base URL of your installationm, visit http://BACKENDURL/xxxx. You should see xxxxxxx
+6. Make sure the backend is working well. If https://BACKENDURL is the base URL of your installation, visit http://BACKENDURL/xxxx. You should see xxxxxxx
 
 ### Installing the front-end
 
