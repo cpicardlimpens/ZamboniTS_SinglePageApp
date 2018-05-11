@@ -33,7 +33,7 @@ The Zamboni TouchStreet web-application is composed of:
 ### Installing the front-end
 
 1. Download locally the code from this repository by cloning it or clicking [here](https://github.com/cpicardlimpens/zambonits_onepageapp).
-2. When online use (versus localhost) use, modify the variable *var API_BASE_URL* within the file architecture.js setting it to the value  *"https://zambonits.limpica.net/wp/wp-json/wp/v2/"* (instead of *http*).
+2. When online use (versus localhost use), modify the variable *var API_BASE_URL* within the file architecture.js setting it to the value  *"https://zambonits.limpica.net/wp/wp-json/wp/v2/"* (instead of *http*).
 3. upload the code to your host provider. To ensure the use of HTTPS, we provide a .htaccess file usable with a classic Apache Web server; make sure to upload it as well. If you use a different domain or provider than for the backend, enable HTTPS.
 4. test the application by visiting https://YOURFRONTENTURL/index.html.
 
