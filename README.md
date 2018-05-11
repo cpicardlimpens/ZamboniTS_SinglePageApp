@@ -21,21 +21,21 @@ The Zamboni TouchStreet web-application is composed of:
 
 ### Installing the backend:
 
-1. Download the backend wordpress code [here]()
+1. Download the backend wordpress code [here](http://zambonits.limpica.net/wp.zip).
 2. copy it to a Php web server folder with the following requirements:
     - PHP Version 7.0.27
     - MySQL server 5.1.73
-3. download the dump of the database from [here]()
-4. load the dump into the database server of your host provider. For example see the procedure using [PHPMyadmin](https://codex.wordpress.org/phpMyAdmin) [https://docs.phpmyadmin.net/en/latest/import_export.html](https://docs.phpmyadmin.net/en/latest/import_export.html)
+3. download the dump of the database from [here](https://github.com/cpicardlimpens/zambonits_backend)
+4. load the dump into the database server of your host provider. For example see the procedure using [PHPMyadmin](https://codex.wordpress.org/phpMyAdmin). [https://docs.phpmyadmin.net/en/latest/import_export.html](https://docs.phpmyadmin.net/en/latest/import_export.html)
 5. configure your hosting solution to use and force the use of HTTPS.
-6. Make sure the backend is working well. If https://BACKENDURL is the base URL of your installation, visit http://BACKENDURL/xxxx. You should see xxxxxxx
+6. Make sure the backend is working well. If https://BACKENDURL is the base URL of your installation, visit http://BACKENDURL/xxxx. You should see xxxxxxx.
 
 ### Installing the front-end
 
-1. Download locally the code from this repository by cloning it or clicking [here](xxx)
-2. Modify the variable YYYYY with the file YYY.js setting it to the value ....
+1. Download locally the code from this repository by cloning it or clicking [here](https://github.com/cpicardlimpens/zambonits_onepageapp).
+2. When online use (versus localhost) use, modify the variable *var API_BASE_URL* within the file architecture.js setting it to the value  *"https://zambonits.limpica.net/wp/wp-json/wp/v2/"* (instead of *http*).
 3. upload the code to your host provider. To ensure the use of HTTPS, we provide a .htaccess file usable with a classic Apache Web server; make sure to upload it as well. If you use a different domain or provider than for the backend, enable HTTPS.
-4. test the application by visiting https://YOURFRONTENTURL/index.html
+4. test the application by visiting https://YOURFRONTENTURL/index.html.
 
 
 
